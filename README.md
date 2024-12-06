@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# NTTZM
 
-## Getting Started
+신규 프로젝트 생성시 필수적으로 필요한 컴포넌트 및 유틸리티 함수,config 등을 템플릿화 <br/>
+프로젝트 폴더링 구조는 containers 방식으로 구성 <br/>
 
-First, run the development server:
+상세한 구성과 주의사항은 아래 기재
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 기본 환경
+### 프레임워크 및 라이브러리
+* <strong>next.js</strong> 14.2.5 app router (react 18)
+* <strong>tailwind</strong> 3.4.1
+* <strong>typescript</strong> 5
+* <strong>zustand</strong> 5.0.2
+* <strong>motion</strong> (framer motion) 11.13.1
+* react-icons 5.4.0
+* Pretendard 폰트
+* sharp
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 소스
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+#### components
+* modal
+> * ModalPortal <br/>
+모달이 돔에 위치하는 영역 RootLayout에 배치
+> * useModal <br/>
+컴포넌트에서 모달을 컨트롤 하기위한 hook (store를 제어함)
+> * store <br/>
+중첩 모달 등 전역적으로 모달을 관리
+* toast
+> * ToastPortal <br/>
+토스트가 돔에 위치하는 영역 RootLayout에 배치
+> * useToast <br/>
+컴포넌트에서 토스트 컨트롤 하기위한 hook (store를 제어함)
+> * store <br/>
+전역적으로 토스트 관리
+> * message <br/>
+토스트 메세지 일관성 유지
+* svg/index
+> react-icons를 통해 import한 svg를 컴포넌트로써 export
+* loadingSpinner
 
-## Learn More
+#### hooks
+* useDeviceDetect
+> 기기(스크린 사이즈)를 감지
 
-To learn more about Next.js, take a look at the following resources:
+#### config
+* global.css
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+* tailwind config
+> * content/container
+> * spacing
+> * fade keyframes 
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## 주의
+아래 텍스트를 전체 검색 후 내용 수정 후 프로젝트 진행 필요함. <br/>
+ex) breakpoints, inner, modal size등 
+> /* 프로젝트 성격에 맞게 수정 필요 */
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
