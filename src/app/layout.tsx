@@ -5,6 +5,7 @@ import localFont from "next/font/local";
 import { cn } from "@/utils";
 import ModalPortal from "@/components/modal/ModalPortal";
 import ToastPortal from "@/components/toast/ToastPortal";
+import Header from "@/components/Header";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -26,6 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(pretendard.variable)}>
+        <Header />
         {children}
         <ModalPortal />
         <ToastPortal />
