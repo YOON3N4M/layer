@@ -25,9 +25,12 @@ function LayerContainer(props: LayerContainerProps) {
 
   return (
     <div className="flex">
-      {memoList.map((memo) => (
-        <NoteOverlay key={memo.id} memo={memo} />
-      ))}
+      {/* memo display */}
+      <div className="flex mt-[100px]">
+        {memoList.map((memo) => (
+          <NoteOverlay key={memo.id} memo={memo} />
+        ))}
+      </div>
     </div>
   );
 }
