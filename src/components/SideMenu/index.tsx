@@ -3,15 +3,17 @@
 import { useState } from "react";
 import { IconEye, IconEyeOff } from "../svg";
 import { cn } from "@/utils";
+import { useLayerList } from "@/state";
+import { Layer } from "@/types";
 
 interface SideMenuProps {}
-
-const EXAMPLE_LAYER = ["업무", "일상", 3, 4, 5];
 
 function SideMenu(props: SideMenuProps) {
   const {} = props;
 
   const [isHide, setIsHide] = useState(false);
+
+  const layerList = useLayerList();
 
   function handleMenuHideClick() {
     setIsHide((prev) => !prev);
@@ -34,8 +36,8 @@ function SideMenu(props: SideMenuProps) {
           {isHide ? "SHOW MENU" : "HIDE MENU"}
         </button>
         <div className="size-full">
-          {EXAMPLE_LAYER.map((item) => (
-            <LayerItem key={item} name={item} />
+          {layerList.map((layer) => (
+            <LayerItem key={layer.id} layer={layer} />
           ))}
         </div>
       </div>
@@ -45,8 +47,13 @@ function SideMenu(props: SideMenuProps) {
 
 export default SideMenu;
 
-function LayerItem({ name }: { name: any }) {
-  const [isHide, setIsHide] = useState(false);
+interface LayerItemProps {
+  layer: Layer;
+}
+
+function LayerItem(props: LayerItemProps) {
+  const { layer } = props;
+  const [isHide, setIsHide] = useState(layer.isHide);
 
   function handleLayerHideClick() {
     setIsHide((prev) => !prev);
@@ -55,7 +62,7 @@ function LayerItem({ name }: { name: any }) {
   return (
     <div className="w-full p-lg border-b flex">
       <span className={cn("transition-colors", isHide && "text-gray-400")}>
-        {name}
+        {layer.name}
       </span>
       <button onClick={handleLayerHideClick} className="ml-auto text-gray-400">
         {isHide ? <IconEyeOff /> : <IconEye />}
