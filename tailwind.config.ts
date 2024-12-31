@@ -12,6 +12,10 @@ const config: Config = {
       borderRadius: {
         md: "4px",
       },
+      zIndex: {
+        sideMenu: "9000",
+        craete: "10000",
+      },
       /* 프로젝트 성격에 맞게 수정 필요 */
       screens: {
         mo: { max: "734px" },
