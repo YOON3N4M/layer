@@ -6,6 +6,8 @@ import { cn } from "@/utils";
 import ModalPortal from "@/components/modal/ModalPortal";
 import ToastPortal from "@/components/toast/ToastPortal";
 import Header from "@/components/Header";
+import SideMenu from "@/components/SideMenu";
+import CreateMemoButton from "@/components/CreateMemoButton";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -28,6 +30,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={cn(pretendard.variable)}>
         <Header />
+        <SideMenu />
+        <CreateMemoButton />
         {children}
         <ModalPortal />
         <ToastPortal />
