@@ -2,6 +2,7 @@
 
 import Overlay from "@/components/Overlay";
 import NoteOverlay from "@/components/Overlay/NoteOverlay";
+import TodoOverlay from "@/components/Overlay/TodoOverlay";
 import { useMemoActions, useMemoList } from "@/state";
 import { Memo } from "@/types";
 import { handleLocalStorage } from "@/utils/localstorage";
@@ -45,6 +46,6 @@ function RenderOverlay({ memo }: { memo: Memo }) {
     case "memo":
       return <NoteOverlay memo={memo} />;
     case "todo":
-      return <></>;
+      return <TodoOverlay memo={memo} />;
   }
 }

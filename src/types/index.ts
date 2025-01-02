@@ -23,6 +23,7 @@ export interface NoteMemo extends MemoTemplate {
 }
 
 export interface Todo {
+  id: number;
   isDone: boolean;
   body: string;
 }

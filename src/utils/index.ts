@@ -16,7 +16,6 @@ export function generateNewMemo(type: MemoType, parentLayerId: number): Memo {
   const newMemo: any = {
     id: Date.now(),
     parentLayerId,
-    body: "",
     type,
   };
 
@@ -25,12 +24,21 @@ export function generateNewMemo(type: MemoType, parentLayerId: number): Memo {
       newMemo.body = "";
       break;
     case "todo":
-      const newTodo: Todo = { isDone: false, body: "새 할일 목록" };
-      newMemo.todoList = [newTodo];
+      newMemo.todoList = [generateNewTodoItem()];
       break;
   }
 
   return newMemo;
+}
+
+export function generateNewTodoItem() {
+  const newTodo: Todo = {
+    isDone: false,
+    body: "",
+    id: Date.now(),
+  };
+
+  return newTodo;
 }
 
 /**

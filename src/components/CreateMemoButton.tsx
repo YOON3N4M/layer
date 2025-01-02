@@ -42,13 +42,19 @@ function CreateMemoButton(props: CreateMemoButtonProps) {
                 onClick={handleCreateLayerClick}
                 className="w-full p-md border-b"
               >
-                New Layer
+                새 레이어
               </button>
               <button
                 onClick={() => handleCreateMemoClick("memo")}
                 className="w-full p-md border-b"
               >
-                New memo
+                새 메모
+              </button>
+              <button
+                onClick={() => handleCreateMemoClick("todo")}
+                className="w-full p-md border-b"
+              >
+                새 할일
               </button>
             </div>
           </div>
