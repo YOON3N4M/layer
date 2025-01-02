@@ -43,7 +43,7 @@ function NoteOverlay(props: NoteOverlayProps) {
         <textarea
           value={body}
           onChange={handleTextareaChange}
-          className="px-sm w-full resize-none outline-none"
+          className="px-sm w-full resize-none outline-none min-h-[250px]"
         >
           {body}
         </textarea>
