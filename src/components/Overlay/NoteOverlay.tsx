@@ -5,6 +5,7 @@ import { Memo, NoteMemo } from "@/types";
 import { handleLocalStorage } from "@/utils/localstorage";
 import useDataSync from "@/hooks/useDataSync";
 import { useLayerList } from "@/state";
+import OverlayTab from "./OverlayTab";
 
 interface NoteOverlayProps extends OverlayProps {
   memo: NoteMemo;
@@ -47,14 +48,7 @@ function NoteOverlay(props: NoteOverlayProps) {
 
   return (
     <Overlay hidden={isHide}>
-      <div className="w-full px-sm py-xs flex justify-end border-b gap-xs text-sm">
-        <button onClick={handleDeleteClick} className="opacity-30">
-          <IconTrash />
-        </button>
-        <button className="opacity-30">
-          <IconPin />
-        </button>
-      </div>
+      <OverlayTab memoId={id} />
       <div className="mt-sm text-sm">
         <textarea
           value={body}
