@@ -3,6 +3,7 @@ import Overlay, { OverlayProps } from ".";
 import { IconPin, IconTrash } from "../svg";
 import { Memo } from "@/types";
 import { handleLocalStorage } from "@/utils/localstorage";
+import useDataSync from "@/hooks/useDataSync";
 
 interface NoteOverlayProps extends OverlayProps {
   memo: Memo;
@@ -13,6 +14,8 @@ function NoteOverlay(props: NoteOverlayProps) {
 
   const [body, setBody] = useState(memo.body);
 
+  const { editMemo } = useDataSync();
+
   function handleTextareaChange(event: ChangeEvent<HTMLTextAreaElement>) {
     setBody(event.target.value);
   }
@@ -21,7 +24,7 @@ function NoteOverlay(props: NoteOverlayProps) {
     // 디바운스 효과: 1초 후에 저장
     const timeoutId = setTimeout(() => {
       const newMemo = { ...memo, body };
-      handleLocalStorage.saveMemo(newMemo);
+      editMemo(newMemo);
       console.log("저장", memo.id);
     }, 1000);
 

@@ -10,6 +10,7 @@ interface MemoStore {
     removeLayer: (id: number) => void;
     setMemoList: (memoList: Memo[]) => void;
     addMemo: (memo: Memo) => void;
+    editMemo: (memo: Memo) => void;
     removeMemo: (id: number) => void;
   };
 }
@@ -28,6 +29,19 @@ const useMemoStore = create<MemoStore>((set) => ({
     setMemoList: (memoList) => set({ memoList }),
     addMemo: (memo) =>
       set((state) => ({ memoList: [...state.memoList, memo] })),
+    editMemo: (memo) =>
+      set((state) => {
+        const memoListClone = [...state.memoList];
+        const targetIndex = memoListClone.findIndex(
+          (item) => item.id === memo.id
+        );
+
+        if (targetIndex !== -1) {
+          memoListClone[targetIndex] = memo;
+        }
+
+        return { memoList: memoListClone };
+      }),
     removeMemo: (id) =>
       set((state) => ({
         memoList: state.memoList.filter((memo) => memo.id !== id),

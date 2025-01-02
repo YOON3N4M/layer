@@ -5,6 +5,7 @@ import { IconAddFile, IconPencilePlus, IconPlus } from "./svg";
 import { useLayerList, useMemoActions } from "@/state";
 import { generateNewLayer, generateNewMemo } from "@/utils";
 import { handleLocalStorage } from "@/utils/localstorage";
+import useDataSync from "@/hooks/useDataSync";
 
 interface CreateMemoButtonProps {}
 
@@ -15,23 +16,18 @@ function CreateMemoButton(props: CreateMemoButtonProps) {
 
   const [isHide, setIsHide] = useState(true);
 
-  const layerList = useLayerList();
-  const { addMemo, addLayer } = useMemoActions();
+  const { createLayer, createMemo } = useDataSync();
 
   function handleHideClick() {
     setIsHide((prev) => !prev);
   }
 
   function handleCreateLayerClick() {
-    const newLayer = generateNewLayer(`layer ${layerList.length}`);
-    handleLocalStorage.addLayer(newLayer);
-    addLayer(newLayer);
+    createLayer();
   }
 
   function handleCreateMemoClick() {
-    const newMemo = generateNewMemo("memo", layerList[0].id);
-    handleLocalStorage.addMemo(newMemo);
-    addMemo(newMemo);
+    createMemo();
     handleHideClick();
   }
 

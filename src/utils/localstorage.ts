@@ -24,7 +24,7 @@ function addMemo(memo: Memo) {
   localStorage.setItem("memo", JSON.stringify(memoList));
 }
 
-function saveMemo(memo: Memo) {
+function editMemo(memo: Memo) {
   const memoList = getMemo() as Memo[];
   const targetIndex = memoList.findIndex((item) => item.id === memo.id);
 
@@ -41,5 +41,5 @@ export const handleLocalStorage = {
   addLayer,
   getMemo,
   addMemo,
-  saveMemo,
+  editMemo,
 };
