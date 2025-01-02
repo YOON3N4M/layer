@@ -4,6 +4,7 @@ import { IconPin, IconTrash } from "../svg";
 import { Memo } from "@/types";
 import { handleLocalStorage } from "@/utils/localstorage";
 import useDataSync from "@/hooks/useDataSync";
+import { useLayerList } from "@/state";
 
 interface NoteOverlayProps extends OverlayProps {
   memo: Memo;
@@ -13,8 +14,8 @@ function NoteOverlay(props: NoteOverlayProps) {
   const { memo } = props;
 
   const [body, setBody] = useState(memo.body);
-
   const { editMemo } = useDataSync();
+  const layerList = useLayerList();
 
   function handleTextareaChange(event: ChangeEvent<HTMLTextAreaElement>) {
     setBody(event.target.value);
@@ -32,8 +33,15 @@ function NoteOverlay(props: NoteOverlayProps) {
     return () => clearTimeout(timeoutId);
   }, [body]); // text와 savedText가 변경될 때 실행
 
+  const parentLayer = layerList.find(
+    (layer) => layer.id === memo.parentLayerId
+  );
+  if (!parentLayer) return;
+
+  const isHide = parentLayer.isHide;
+
   return (
-    <Overlay>
+    <Overlay hidden={isHide}>
       <div className="w-full px-sm py-xs flex justify-end border-b gap-xs text-sm">
         <button className="opacity-30">
           <IconTrash />

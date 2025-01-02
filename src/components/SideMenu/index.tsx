@@ -5,6 +5,7 @@ import { IconEye, IconEyeOff } from "../svg";
 import { cn } from "@/utils";
 import { useLayerList } from "@/state";
 import { Layer } from "@/types";
+import useDataSync from "@/hooks/useDataSync";
 
 interface SideMenuProps {}
 
@@ -53,10 +54,13 @@ interface LayerItemProps {
 
 function LayerItem(props: LayerItemProps) {
   const { layer } = props;
-  const [isHide, setIsHide] = useState(layer.isHide);
+
+  const { isHide } = layer;
+  const { editLayer } = useDataSync();
 
   function handleLayerHideClick() {
-    setIsHide((prev) => !prev);
+    const newLayer = { ...layer, isHide: !isHide };
+    editLayer(newLayer);
   }
 
   return (

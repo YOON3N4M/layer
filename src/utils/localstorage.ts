@@ -15,6 +15,18 @@ function addLayer(layer: Layer) {
   localStorage.setItem(LAYER_KEY, JSON.stringify(layerList));
 }
 
+function editLayer(layer: Layer) {
+  const layerList = getLayer() as Layer[];
+  const targetIndex = layerList.findIndex((item) => item.id === layer.id);
+
+  if (targetIndex !== -1) {
+    // 2. 해당 인덱스의 요소를 새 객체로 교체
+    layerList[targetIndex] = layer;
+  }
+
+  localStorage.setItem(MEMO_KEY, JSON.stringify(layerList));
+}
+
 function getMemo() {
   const memoValue = localStorage.getItem(MEMO_KEY);
   const memoList = memoValue ? JSON.parse(memoValue) : [];
@@ -45,4 +57,5 @@ export const handleLocalStorage = {
   getMemo,
   addMemo,
   editMemo,
+  editLayer,
 };

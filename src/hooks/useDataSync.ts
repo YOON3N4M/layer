@@ -1,13 +1,19 @@
 import { useLayerList, useMemoActions } from "@/state";
-import { Memo } from "@/types";
+import { Layer, Memo } from "@/types";
 import { generateNewLayer, generateNewMemo } from "@/utils";
 import { handleLocalStorage } from "@/utils/localstorage";
 
 //여기서 로컬스토리지와 state를 동시에 제어하도록 해야할듯
 function useDataSync() {
   const layerList = useLayerList();
-  const { addMemo, addLayer, editMemo: editStoreMemo } = useMemoActions();
+  const {
+    addMemo,
+    addLayer,
+    editMemo: editStateMemo,
+    editLayer: editStateLayer,
+  } = useMemoActions();
 
+  //레이어
   function createLayer() {
     const newLayer = generateNewLayer(`layer ${layerList.length}`);
     handleLocalStorage.addLayer(newLayer);
@@ -15,7 +21,12 @@ function useDataSync() {
 
     return newLayer;
   }
+  function editLayer(layer: Layer) {
+    handleLocalStorage.editLayer(layer);
+    editStateLayer(layer);
+  }
 
+  // 메모
   function createMemo() {
     let parentLayer = layerList[layerList.length - 1];
 
@@ -31,10 +42,10 @@ function useDataSync() {
 
   function editMemo(memo: Memo) {
     handleLocalStorage.editMemo(memo);
-    editStoreMemo(memo);
+    editStateMemo(memo);
   }
 
-  return { createLayer, createMemo, editMemo };
+  return { createLayer, editLayer, createMemo, editMemo };
 }
 
 export default useDataSync;
