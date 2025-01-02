@@ -27,6 +27,14 @@ function editLayer(layer: Layer) {
   localStorage.setItem(LAYER_KEY, JSON.stringify(layerList));
 }
 
+function removeLayer(layerId: number) {
+  const layerList = getLayer() as Layer[];
+  const filteredLayerList = layerList.filter((layer) => layer.id !== layerId);
+
+  localStorage.setItem(LAYER_KEY, JSON.stringify(filteredLayerList));
+}
+
+//메모
 function getMemo() {
   const memoValue = localStorage.getItem(MEMO_KEY);
   const memoList = memoValue ? JSON.parse(memoValue) : [];
@@ -51,6 +59,10 @@ function editMemo(memo: Memo) {
   localStorage.setItem(MEMO_KEY, JSON.stringify(memoList));
 }
 
+function setMemoList(memoList: Memo[]) {
+  localStorage.setItem(MEMO_KEY, JSON.stringify(memoList));
+}
+
 function removeMemo(id: number) {
   const memoList = getMemo() as Memo[];
   const filteredMemoList = memoList.filter((memo) => memo.id !== id);
@@ -62,8 +74,10 @@ export const handleLocalStorage = {
   getLayer,
   addLayer,
   editLayer,
+  removeLayer,
   getMemo,
   addMemo,
   removeMemo,
   editMemo,
+  setMemoList,
 };

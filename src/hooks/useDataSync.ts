@@ -1,5 +1,5 @@
 import { useSelectedLayerId } from "@/containers/layer/state";
-import { useLayerList, useMemoActions } from "@/state";
+import { useLayerList, useMemoActions, useMemoList } from "@/state";
 import { Layer, Memo } from "@/types";
 import { generateNewLayer, generateNewMemo } from "@/utils";
 import { handleLocalStorage } from "@/utils/localstorage";
@@ -10,12 +10,15 @@ function useDataSync() {
   const {
     addLayer,
     editLayer: editStateLayer,
+    removeLayer: removeStateLayer,
     addMemo,
     removeMemo: removeStateMemo,
     editMemo: editStateMemo,
+    setMemoList,
   } = useMemoActions();
 
   const selectedLayerId = useSelectedLayerId();
+  const memoList = useMemoList();
 
   //레이어
   function createLayer() {
@@ -29,7 +32,16 @@ function useDataSync() {
     handleLocalStorage.editLayer(layer);
     editStateLayer(layer);
   }
+  function removeLayer(layerId: number) {
+    const filteredMemoList = memoList.filter(
+      (memo) => memo.parentLayerId !== layerId
+    );
+    handleLocalStorage.setMemoList(filteredMemoList);
+    handleLocalStorage.removeLayer(layerId);
 
+    removeStateLayer(layerId);
+    setMemoList(filteredMemoList);
+  }
   // 메모
   function createMemo() {
     let parentLayer = layerList[layerList.length - 1];
@@ -53,7 +65,14 @@ function useDataSync() {
     handleLocalStorage.removeMemo(id);
     removeStateMemo(id);
   }
-  return { createLayer, editLayer, createMemo, editMemo, removeMemo };
+  return {
+    createLayer,
+    editLayer,
+    removeLayer,
+    createMemo,
+    editMemo,
+    removeMemo,
+  };
 }
 
 export default useDataSync;

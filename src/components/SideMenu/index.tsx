@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { IconEye, IconEyeOff, IconLayer } from "../svg";
+import { ChangeEvent, KeyboardEvent, useState } from "react";
+import { IconEye, IconEyeOff, IconLayer, IconTrash } from "../svg";
 import { cn } from "@/utils";
 import { useLayerList, useMemoList } from "@/state";
 import { Layer } from "@/types";
@@ -10,6 +10,7 @@ import {
   useLayerContainerActions,
   useSelectedLayerId,
 } from "@/containers/layer/state";
+import useClickOutside from "@/hooks/useOutsideEvent";
 
 interface SideMenuProps {}
 
@@ -58,9 +59,12 @@ interface LayerItemProps {
 
 function LayerItem(props: LayerItemProps) {
   const { layer } = props;
-  const { isHide, id } = layer;
+  const { isHide, id, name } = layer;
 
-  const { editLayer } = useDataSync();
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [layerName, setLayerName] = useState(name);
+
+  const { editLayer, removeLayer } = useDataSync();
   const memoList = useMemoList();
   const selectedLayerId = useSelectedLayerId();
   const { setSelectedLayerId } = useLayerContainerActions();
@@ -82,6 +86,37 @@ function LayerItem(props: LayerItemProps) {
     editLayer(newLayer);
   }
 
+  function handleLayerNameClick() {
+    setIsEditMode(true);
+  }
+
+  function handleLayerNameChange(event: ChangeEvent<HTMLInputElement>) {
+    setLayerName(event.target.value);
+  }
+
+  function handleInputEnter(event: KeyboardEvent<HTMLInputElement>) {
+    if (event.key === "Enter") {
+      const newLayer = { ...layer, name: layerName };
+      editLayer(newLayer);
+      setIsEditMode(false);
+    }
+  }
+
+  function handleRemoveLayerClick() {
+    const isConfirmed = confirm(
+      "레이어를 삭제하면 해당 레이어에 속한 모든 메모도 함께 삭제 됩니다. 진행하시겠습니까? 유지하고 싶은 메모는 다른 레이어로 옮긴 뒤 다시 시도 해주세요."
+    );
+    if (!isConfirmed) return;
+
+    removeLayer(id);
+  }
+
+  function exitEditMode() {
+    setIsEditMode(false);
+    setLayerName(name);
+  }
+  const ref = useClickOutside(exitEditMode);
+
   return (
     <div
       onClick={handleLayerClick}
@@ -97,9 +132,24 @@ function LayerItem(props: LayerItemProps) {
           isSelect && "border-gray-300"
         )}
       >
-        <div className="flex items-center gap-sm">
+        <div className="w-full flex items-center gap-sm">
           <IconLayer />
-          <span>{layer.name}</span>
+          {isEditMode ? (
+            <div ref={ref} className="w-full flex items-center">
+              <input
+                onKeyDown={handleInputEnter}
+                onChange={handleLayerNameChange}
+                className="w-[80%] rounded-md"
+                value={layerName}
+              ></input>
+              <IconTrash
+                onClick={handleRemoveLayerClick}
+                className="ml-xs text-gray-400"
+              />
+            </div>
+          ) : (
+            <span onDoubleClick={handleLayerNameClick}>{layer.name}</span>
+          )}
         </div>
         <button
           onClick={handleLayerHideClick}
