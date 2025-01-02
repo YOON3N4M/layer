@@ -1,7 +1,14 @@
 "use client";
 
 import { ChangeEvent, KeyboardEvent, useState } from "react";
-import { IconEye, IconEyeOff, IconLayer, IconNote, IconTrash } from "../svg";
+import {
+  IconCheckList,
+  IconEye,
+  IconEyeOff,
+  IconLayer,
+  IconNote,
+  IconTrash,
+} from "../svg";
 import { cn } from "@/utils";
 import { useLayerList, useMemoList } from "@/state";
 import { Layer, Memo, MemoType } from "@/types";
@@ -172,17 +179,33 @@ function MemoListItem({ memo }: { memo: Memo }) {
 
   return (
     <div className="px-xxl py-xs border-b text-sm  flex items-center gap-xs">
-      <MemoIcon type={memo.type} />
-      <span className="truncate">
-        {memo.type === "memo" && (memo.body === "" ? "빈 메모" : memo.body)}
+      <span className="shrink-0">
+        <MemoIcon type={memo.type} />
       </span>
+      <MemoPreview memo={memo} />
     </div>
   );
+}
+
+function MemoPreview({ memo }: { memo: Memo }) {
+  let spanString;
+  switch (memo.type) {
+    case "memo":
+      spanString =
+        memo.type === "memo" && (memo.body === "" ? "빈 메모" : memo.body);
+      break;
+    case "todo":
+      spanString = memo.todoList[0].body;
+  }
+
+  return <span className="truncate">{spanString}</span>;
 }
 
 function MemoIcon({ type }: { type: MemoType }) {
   switch (type) {
     case "memo":
       return <IconNote />;
+    case "todo":
+      return <IconCheckList />;
   }
 }
