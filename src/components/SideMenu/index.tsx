@@ -4,7 +4,7 @@ import { ChangeEvent, KeyboardEvent, useState } from "react";
 import { IconEye, IconEyeOff, IconLayer, IconNote, IconTrash } from "../svg";
 import { cn } from "@/utils";
 import { useLayerList, useMemoList } from "@/state";
-import { Layer, MemoType } from "@/types";
+import { Layer, Memo, MemoType } from "@/types";
 import useDataSync from "@/hooks/useDataSync";
 import {
   useLayerContainerActions,
@@ -160,17 +160,22 @@ function LayerItem(props: LayerItemProps) {
       </div>
       <div>
         {childrenMemoList.map((memo) => (
-          <div
-            key={`layer-${id}-memo-${memo.id}`}
-            className="px-xxl py-xs border-b text-sm  flex items-center gap-xs"
-          >
-            <MemoIcon type={memo.type} />
-            <span className="truncate">
-              {memo.body === "" ? "빈 메모" : memo.body}
-            </span>
-          </div>
+          <MemoListItem key={`layer-${id}-memo-${memo.id}`} memo={memo} />
         ))}
       </div>
+    </div>
+  );
+}
+
+function MemoListItem({ memo }: { memo: Memo }) {
+  const { id } = memo;
+
+  return (
+    <div className="px-xxl py-xs border-b text-sm  flex items-center gap-xs">
+      <MemoIcon type={memo.type} />
+      <span className="truncate">
+        {memo.type === "memo" && (memo.body === "" ? "빈 메모" : memo.body)}
+      </span>
     </div>
   );
 }

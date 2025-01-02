@@ -4,16 +4,29 @@ export interface Layer {
   name: string;
 }
 
+export type Memo = NoteMemo | TodoMemo;
 export type MemoType = "memo" | "todo" | "canvas";
 export interface MemoPosition {
   x: number;
   y: number;
 }
 
-export interface Memo {
+export interface MemoTemplate {
   id: number;
-  type: MemoType;
   parentLayerId: number;
-  body: string;
   position?: MemoPosition;
+}
+
+export interface NoteMemo extends MemoTemplate {
+  type: "memo";
+  body: string;
+}
+
+export interface Todo {
+  isDone: boolean;
+  body: string;
+}
+export interface TodoMemo extends MemoTemplate {
+  type: "todo";
+  todoList: Todo[];
 }

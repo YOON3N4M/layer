@@ -8,3 +8,4 @@ export { TbFilePlus as IconAddFile } from "react-icons/tb";
 export { TbPencilPlus as IconPencilePlus } from "react-icons/tb";
 export { LuLayers as IconLayer } from "react-icons/lu";
 export { TbNotes as IconNote } from "react-icons/tb";
+export { IoCloseOutline as IconXSign } from "react-icons/io5";

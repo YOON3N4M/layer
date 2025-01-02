@@ -1,6 +1,6 @@
 import { useSelectedLayerId } from "@/containers/layer/state";
 import { useLayerList, useMemoActions, useMemoList } from "@/state";
-import { Layer, Memo } from "@/types";
+import { Layer, Memo, MemoType } from "@/types";
 import { generateNewLayer, generateNewMemo } from "@/utils";
 import { handleLocalStorage } from "@/utils/localstorage";
 
@@ -43,7 +43,7 @@ function useDataSync() {
     setMemoList(filteredMemoList);
   }
   // 메모
-  function createMemo() {
+  function createMemo(type: MemoType) {
     let parentLayer = layerList[layerList.length - 1];
 
     // 레어아가 하나도 존재하지 않으면 새 레이어도 생성
@@ -51,7 +51,7 @@ function useDataSync() {
       parentLayer = createLayer();
     }
 
-    const newMemo = generateNewMemo("memo", selectedLayerId ?? parentLayer.id);
+    const newMemo = generateNewMemo(type, selectedLayerId ?? parentLayer.id);
     handleLocalStorage.addMemo(newMemo);
     addMemo(newMemo);
   }

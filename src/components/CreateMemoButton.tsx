@@ -6,6 +6,7 @@ import { useLayerList, useMemoActions } from "@/state";
 import { generateNewLayer, generateNewMemo } from "@/utils";
 import { handleLocalStorage } from "@/utils/localstorage";
 import useDataSync from "@/hooks/useDataSync";
+import { MemoType } from "@/types";
 
 interface CreateMemoButtonProps {}
 
@@ -26,8 +27,8 @@ function CreateMemoButton(props: CreateMemoButtonProps) {
     createLayer();
   }
 
-  function handleCreateMemoClick() {
-    createMemo();
+  function handleCreateMemoClick(type: MemoType) {
+    createMemo(type);
     handleHideClick();
   }
 
@@ -44,7 +45,7 @@ function CreateMemoButton(props: CreateMemoButtonProps) {
                 New Layer
               </button>
               <button
-                onClick={handleCreateMemoClick}
+                onClick={() => handleCreateMemoClick("memo")}
                 className="w-full p-md border-b"
               >
                 New memo

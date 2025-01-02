@@ -1,13 +1,13 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import Overlay, { OverlayProps } from ".";
 import { IconPin, IconTrash } from "../svg";
-import { Memo } from "@/types";
+import { Memo, NoteMemo } from "@/types";
 import { handleLocalStorage } from "@/utils/localstorage";
 import useDataSync from "@/hooks/useDataSync";
 import { useLayerList } from "@/state";
 
 interface NoteOverlayProps extends OverlayProps {
-  memo: Memo;
+  memo: NoteMemo;
 }
 
 function NoteOverlay(props: NoteOverlayProps) {

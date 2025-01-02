@@ -3,6 +3,7 @@
 import Overlay from "@/components/Overlay";
 import NoteOverlay from "@/components/Overlay/NoteOverlay";
 import { useMemoActions, useMemoList } from "@/state";
+import { Memo } from "@/types";
 import { handleLocalStorage } from "@/utils/localstorage";
 import { useEffect } from "react";
 
@@ -28,7 +29,7 @@ function LayerContainer(props: LayerContainerProps) {
       {/* memo display */}
       <div className="flex mt-[100px]">
         {memoList.map((memo) => (
-          <NoteOverlay key={memo.id} memo={memo} />
+          <RenderOverlay key={memo.id} memo={memo} />
         ))}
       </div>
     </div>
@@ -36,3 +37,14 @@ function LayerContainer(props: LayerContainerProps) {
 }
 
 export default LayerContainer;
+
+function RenderOverlay({ memo }: { memo: Memo }) {
+  const { type } = memo;
+
+  switch (type) {
+    case "memo":
+      return <NoteOverlay memo={memo} />;
+    case "todo":
+      return <></>;
+  }
+}
