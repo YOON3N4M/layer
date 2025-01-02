@@ -24,7 +24,7 @@ function editLayer(layer: Layer) {
     layerList[targetIndex] = layer;
   }
 
-  localStorage.setItem(MEMO_KEY, JSON.stringify(layerList));
+  localStorage.setItem(LAYER_KEY, JSON.stringify(layerList));
 }
 
 function getMemo() {
