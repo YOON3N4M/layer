@@ -1,10 +1,10 @@
 "use client";
 
 import { ChangeEvent, KeyboardEvent, useState } from "react";
-import { IconEye, IconEyeOff, IconLayer, IconTrash } from "../svg";
+import { IconEye, IconEyeOff, IconLayer, IconNote, IconTrash } from "../svg";
 import { cn } from "@/utils";
 import { useLayerList, useMemoList } from "@/state";
-import { Layer } from "@/types";
+import { Layer, MemoType } from "@/types";
 import useDataSync from "@/hooks/useDataSync";
 import {
   useLayerContainerActions,
@@ -162,12 +162,22 @@ function LayerItem(props: LayerItemProps) {
         {childrenMemoList.map((memo) => (
           <div
             key={`layer-${id}-memo-${memo.id}`}
-            className="px-xxl py-xs border-b text-sm truncate"
+            className="px-xxl py-xs border-b text-sm  flex items-center gap-xs"
           >
-            {memo.body === "" ? "빈 메모" : memo.body}
+            <MemoIcon type={memo.type} />
+            <span className="truncate">
+              {memo.body === "" ? "빈 메모" : memo.body}
+            </span>
           </div>
         ))}
       </div>
     </div>
   );
+}
+
+function MemoIcon({ type }: { type: MemoType }) {
+  switch (type) {
+    case "memo":
+      return <IconNote />;
+  }
 }

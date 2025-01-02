@@ -7,3 +7,4 @@ export { TbEyeOff as IconEyeOff } from "react-icons/tb";
 export { TbFilePlus as IconAddFile } from "react-icons/tb";
 export { TbPencilPlus as IconPencilePlus } from "react-icons/tb";
 export { LuLayers as IconLayer } from "react-icons/lu";
+export { TbNotes as IconNote } from "react-icons/tb";
