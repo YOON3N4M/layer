@@ -51,11 +51,19 @@ function editMemo(memo: Memo) {
   localStorage.setItem(MEMO_KEY, JSON.stringify(memoList));
 }
 
+function removeMemo(id: number) {
+  const memoList = getMemo() as Memo[];
+  const filteredMemoList = memoList.filter((memo) => memo.id !== id);
+
+  localStorage.setItem(MEMO_KEY, JSON.stringify(filteredMemoList));
+}
+
 export const handleLocalStorage = {
   getLayer,
   addLayer,
+  editLayer,
   getMemo,
   addMemo,
+  removeMemo,
   editMemo,
-  editLayer,
 };

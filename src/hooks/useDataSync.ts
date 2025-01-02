@@ -7,10 +7,11 @@ import { handleLocalStorage } from "@/utils/localstorage";
 function useDataSync() {
   const layerList = useLayerList();
   const {
-    addMemo,
     addLayer,
-    editMemo: editStateMemo,
     editLayer: editStateLayer,
+    addMemo,
+    removeMemo: removeStateMemo,
+    editMemo: editStateMemo,
   } = useMemoActions();
 
   //레이어
@@ -45,7 +46,11 @@ function useDataSync() {
     editStateMemo(memo);
   }
 
-  return { createLayer, editLayer, createMemo, editMemo };
+  function removeMemo(id: number) {
+    handleLocalStorage.removeMemo(id);
+    removeStateMemo(id);
+  }
+  return { createLayer, editLayer, createMemo, editMemo, removeMemo };
 }
 
 export default useDataSync;

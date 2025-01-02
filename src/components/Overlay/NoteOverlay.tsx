@@ -12,13 +12,18 @@ interface NoteOverlayProps extends OverlayProps {
 
 function NoteOverlay(props: NoteOverlayProps) {
   const { memo } = props;
+  const { id } = memo;
 
   const [body, setBody] = useState(memo.body);
-  const { editMemo } = useDataSync();
+  const { editMemo, removeMemo } = useDataSync();
   const layerList = useLayerList();
 
   function handleTextareaChange(event: ChangeEvent<HTMLTextAreaElement>) {
     setBody(event.target.value);
+  }
+
+  function handleDeleteClick() {
+    removeMemo(id);
   }
 
   useEffect(() => {
@@ -43,7 +48,7 @@ function NoteOverlay(props: NoteOverlayProps) {
   return (
     <Overlay hidden={isHide}>
       <div className="w-full px-sm py-xs flex justify-end border-b gap-xs text-sm">
-        <button className="opacity-30">
+        <button onClick={handleDeleteClick} className="opacity-30">
           <IconTrash />
         </button>
         <button className="opacity-30">
