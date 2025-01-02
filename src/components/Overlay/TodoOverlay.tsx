@@ -137,7 +137,7 @@ function TodoListItem(props: TodoListItemProps) {
 
   return (
     <div
-      className="flex items-center gap-sm"
+      className="flex items-center gap-xs"
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
