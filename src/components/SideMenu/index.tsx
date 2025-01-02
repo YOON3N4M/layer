@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { IconEye, IconEyeOff } from "../svg";
+import { IconEye, IconEyeOff, IconLayer } from "../svg";
 import { cn } from "@/utils";
-import { useLayerList } from "@/state";
+import { useLayerList, useMemoList } from "@/state";
 import { Layer } from "@/types";
 import useDataSync from "@/hooks/useDataSync";
 
@@ -54,9 +54,12 @@ interface LayerItemProps {
 
 function LayerItem(props: LayerItemProps) {
   const { layer } = props;
+  const { isHide, id } = layer;
 
-  const { isHide } = layer;
   const { editLayer } = useDataSync();
+  const memoList = useMemoList();
+  const childrenMemoList = memoList.filter((memo) => memo.parentLayerId === id);
+  const isNoChildren = childrenMemoList.length < 1;
 
   function handleLayerHideClick() {
     const newLayer = { ...layer, isHide: !isHide };
@@ -64,13 +67,29 @@ function LayerItem(props: LayerItemProps) {
   }
 
   return (
-    <div className="w-full p-lg border-b flex">
-      <span className={cn("transition-colors", isHide && "text-gray-400")}>
-        {layer.name}
-      </span>
-      <button onClick={handleLayerHideClick} className="ml-auto text-gray-400">
-        {isHide ? <IconEyeOff /> : <IconEye />}
-      </button>
+    <div className={cn("transition-colors", isHide && "text-gray-400")}>
+      <div className={cn("w-full p-lg border-b flex")}>
+        <div className="flex items-center gap-sm">
+          <IconLayer />
+          <span>{layer.name}</span>
+        </div>
+        <button
+          onClick={handleLayerHideClick}
+          className="ml-auto text-gray-400"
+        >
+          {isHide ? <IconEyeOff /> : <IconEye />}
+        </button>
+      </div>
+      <div>
+        {childrenMemoList.map((memo) => (
+          <div
+            key={`layer-${id}-memo-${memo.id}`}
+            className="px-xxl py-xs border-b text-sm truncate"
+          >
+            {memo.body === "" ? "빈 메모" : memo.body}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
