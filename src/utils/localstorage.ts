@@ -1,7 +1,10 @@
 import { Layer, Memo } from "@/types";
 
+const LAYER_KEY = "layer-layer";
+const MEMO_KEY = "layer-memo";
+
 function getLayer() {
-  const layerValue = localStorage.getItem("layer");
+  const layerValue = localStorage.getItem(LAYER_KEY);
   const layerList = layerValue ? JSON.parse(layerValue) : [];
   return layerList;
 }
@@ -9,11 +12,11 @@ function getLayer() {
 function addLayer(layer: Layer) {
   const layerList = getLayer();
   layerList.push(layer);
-  localStorage.setItem("layer", JSON.stringify(layerList));
+  localStorage.setItem(LAYER_KEY, JSON.stringify(layerList));
 }
 
 function getMemo() {
-  const memoValue = localStorage.getItem("memo");
+  const memoValue = localStorage.getItem(MEMO_KEY);
   const memoList = memoValue ? JSON.parse(memoValue) : [];
   return memoList;
 }
@@ -21,7 +24,7 @@ function getMemo() {
 function addMemo(memo: Memo) {
   const memoList = getMemo();
   memoList.push(memo);
-  localStorage.setItem("memo", JSON.stringify(memoList));
+  localStorage.setItem(MEMO_KEY, JSON.stringify(memoList));
 }
 
 function editMemo(memo: Memo) {
@@ -33,7 +36,7 @@ function editMemo(memo: Memo) {
     memoList[targetIndex] = memo;
   }
 
-  localStorage.setItem("memo", JSON.stringify(memoList));
+  localStorage.setItem(MEMO_KEY, JSON.stringify(memoList));
 }
 
 export const handleLocalStorage = {
