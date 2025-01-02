@@ -1,3 +1,4 @@
+import { useSelectedLayerId } from "@/containers/layer/state";
 import { useLayerList, useMemoActions } from "@/state";
 import { Layer, Memo } from "@/types";
 import { generateNewLayer, generateNewMemo } from "@/utils";
@@ -13,6 +14,8 @@ function useDataSync() {
     removeMemo: removeStateMemo,
     editMemo: editStateMemo,
   } = useMemoActions();
+
+  const selectedLayerId = useSelectedLayerId();
 
   //레이어
   function createLayer() {
@@ -36,7 +39,7 @@ function useDataSync() {
       parentLayer = createLayer();
     }
 
-    const newMemo = generateNewMemo("memo", parentLayer.id);
+    const newMemo = generateNewMemo("memo", selectedLayerId ?? parentLayer.id);
     handleLocalStorage.addMemo(newMemo);
     addMemo(newMemo);
   }

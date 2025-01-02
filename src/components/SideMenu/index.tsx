@@ -6,6 +6,10 @@ import { cn } from "@/utils";
 import { useLayerList, useMemoList } from "@/state";
 import { Layer } from "@/types";
 import useDataSync from "@/hooks/useDataSync";
+import {
+  useLayerContainerActions,
+  useSelectedLayerId,
+} from "@/containers/layer/state";
 
 interface SideMenuProps {}
 
@@ -58,8 +62,20 @@ function LayerItem(props: LayerItemProps) {
 
   const { editLayer } = useDataSync();
   const memoList = useMemoList();
+  const selectedLayerId = useSelectedLayerId();
+  const { setSelectedLayerId } = useLayerContainerActions();
   const childrenMemoList = memoList.filter((memo) => memo.parentLayerId === id);
+
   const isNoChildren = childrenMemoList.length < 1;
+  const isSelect = id === selectedLayerId;
+
+  function handleLayerClick() {
+    if (isSelect) {
+      setSelectedLayerId(null);
+    } else {
+      setSelectedLayerId(id);
+    }
+  }
 
   function handleLayerHideClick() {
     const newLayer = { ...layer, isHide: !isHide };
@@ -67,8 +83,20 @@ function LayerItem(props: LayerItemProps) {
   }
 
   return (
-    <div className={cn("transition-colors", isHide && "text-gray-400")}>
-      <div className={cn("w-full p-lg border-b flex")}>
+    <div
+      onClick={handleLayerClick}
+      className={cn(
+        "transition-colors cursor-pointer",
+        isHide && "text-gray-400",
+        isSelect && "bg-gray-200"
+      )}
+    >
+      <div
+        className={cn(
+          "w-full p-lg border-b flex",
+          isSelect && "border-gray-300"
+        )}
+      >
         <div className="flex items-center gap-sm">
           <IconLayer />
           <span>{layer.name}</span>
