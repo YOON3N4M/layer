@@ -205,7 +205,7 @@ function MemoPreview({ memo }: { memo: Memo }) {
         memo.type === "memo" && (memo.body === "" ? "빈 메모" : memo.body);
       break;
     case "todo":
-      spanString = memo.todoList[0].body;
+      spanString = memo.todoList[0] ? memo.todoList[0].body : "";
   }
 
   return <span className="truncate">{spanString}</span>;
