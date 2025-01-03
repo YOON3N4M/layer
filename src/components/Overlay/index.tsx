@@ -5,6 +5,7 @@ import { checkObjectDiffer, cn } from "@/utils";
 import { motion, useMotionValue, useMotionValueEvent } from "motion/react";
 import { HTMLAttributes, ReactNode, useEffect, useState } from "react";
 import OverlayTab from "./OverlayTab";
+import { useSelectedLayerId } from "@/containers/layer/state";
 
 export interface OverlayProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
@@ -25,6 +26,10 @@ function Overlay(props: OverlayProps) {
   const { position = { x: 0, y: 0 }, parentLayerId, id, isPin } = memo;
 
   const [pos, setPos] = useState(position);
+  const { editMemo } = useDataSync();
+  const layerList = useLayerList();
+  const selectedLayerId = useSelectedLayerId();
+  const isSelected = selectedLayerId === memo.parentLayerId;
 
   const posX = useMotionValue(position.x);
   useMotionValueEvent(posX, "change", (latest) => {
@@ -35,9 +40,6 @@ function Overlay(props: OverlayProps) {
   useMotionValueEvent(posY, "change", (latest) => {
     setPos((prev) => ({ ...prev, y: latest }));
   });
-
-  const { editMemo } = useDataSync();
-  const layerList = useLayerList();
 
   const isPositionChange = !checkObjectDiffer(pos, position);
   // 드래그 후 위치 저장
@@ -58,7 +60,6 @@ function Overlay(props: OverlayProps) {
   if (!parentLayer) return;
 
   const isHide = parentLayer.isHide;
-  // const isInitPosition = pos.x === 0 && pos.y === 0;
 
   return (
     <motion.div
@@ -70,10 +71,9 @@ function Overlay(props: OverlayProps) {
       exit="hidden"
       className={cn(
         className,
-        "cursor-pointer z-overlay border shadow-sm rounded-[4px] bg-white w-min min-w-[300px] pb-sm"
-        // isInitPosition ? "relative" : "absolute"
+        "absolute cursor-pointer z-overlay border shadow-sm rounded-[4px] bg-white w-min min-w-[300px] pb-sm transition-colors",
+        isSelected && "border-blue-400"
       )}
-      // {...bindPos()}
       style={{ y: posY, x: posX, zIndex: zIndex }}
     >
       <OverlayTab memo={memo} />

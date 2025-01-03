@@ -1,8 +1,10 @@
 "use client";
 
-import { ChangeEvent, KeyboardEvent, useState } from "react";
+import { ChangeEvent, KeyboardEvent, MouseEvent, useState } from "react";
 import {
   IconCheckList,
+  IconDoubleLeftArrow,
+  IconDoubleRightArrow,
   IconEye,
   IconEyeOff,
   IconLayer,
@@ -35,7 +37,7 @@ function SideMenu(props: SideMenuProps) {
   return (
     <div
       className={cn(
-        "fixed right-0 top-0 h-screen border shadow-sm z-sideMenu w-[250px] bg-white/40 backdrop-blur-sm transition-transform",
+        "fixed right-0 top-0 h-screen border shadow-sm z-sideMenu w-[250px] bg-white backdrop-blur-sm transition-transform",
         isHide && "translate-x-full"
       )}
     >
@@ -43,10 +45,10 @@ function SideMenu(props: SideMenuProps) {
         <button
           onClick={handleMenuHideClick}
           className={cn(
-            "absolute right-full w-max top-[30%] mr-md opacity-30 hover:opacity-100 transition-opacity"
+            "absolute right-full text-3xl w-max top-[30%] mr-md opacity-30 hover:opacity-100 text-blue-400 transition-opacity"
           )}
         >
-          {isHide ? "SHOW MENU" : "HIDE MENU"}
+          {isHide ? <IconDoubleLeftArrow /> : <IconDoubleRightArrow />}
         </button>
         <div className="size-full">
           {layerList.map((layer) => (
@@ -84,6 +86,7 @@ function LayerItem(props: LayerItemProps) {
     if (isSelect) {
       setSelectedLayerId(null);
     } else {
+      if (isHide) return;
       setSelectedLayerId(id);
     }
   }
@@ -93,8 +96,13 @@ function LayerItem(props: LayerItemProps) {
     editLayer(newLayer);
   }
 
-  function handleLayerNameClick() {
+  function handleLayerNameDoubleClick() {
     setIsEditMode(true);
+  }
+
+  function handleLayerRightClick(event: MouseEvent<HTMLDivElement>) {
+    event.preventDefault();
+    setIsEditMode((prev) => !prev);
   }
 
   function handleLayerNameChange(event: ChangeEvent<HTMLInputElement>) {
@@ -130,12 +138,13 @@ function LayerItem(props: LayerItemProps) {
       className={cn(
         "transition-colors cursor-pointer",
         isHide && "text-gray-400",
-        isSelect && "bg-gray-200"
+        isSelect && "bg-blue-50 border border-blue-400"
       )}
+      onContextMenu={handleLayerRightClick}
     >
       <div
         className={cn(
-          "w-full p-lg border-b flex",
+          "w-full py-sm px-md border-b flex",
           isSelect && "border-gray-300"
         )}
       >
@@ -146,7 +155,7 @@ function LayerItem(props: LayerItemProps) {
               <input
                 onKeyDown={handleInputEnter}
                 onChange={handleLayerNameChange}
-                className="w-[80%] rounded-md"
+                className="w-[70%] rounded-md bg-white border border-blue-400 px-xxs"
                 value={layerName}
               ></input>
               <IconTrash
@@ -155,7 +164,7 @@ function LayerItem(props: LayerItemProps) {
               />
             </div>
           ) : (
-            <span onDoubleClick={handleLayerNameClick}>{layer.name}</span>
+            <span onDoubleClick={handleLayerNameDoubleClick}>{layer.name}</span>
           )}
         </div>
         <button
@@ -178,7 +187,8 @@ function MemoListItem({ memo }: { memo: Memo }) {
   const { id } = memo;
 
   return (
-    <div className="px-xxl py-xs border-b text-sm  flex items-center gap-xs">
+    <div className="px-xl py-xs border-b text-sm  flex items-center gap-xs">
+      <span>·</span>
       <span className="shrink-0">
         <MemoIcon type={memo.type} />
       </span>
