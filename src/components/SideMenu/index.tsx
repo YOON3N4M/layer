@@ -83,7 +83,7 @@ function LayerItem(props: LayerItemProps) {
   const childrenMemoList = memoList.filter((memo) => memo.parentLayerId === id);
 
   const isNoChildren = childrenMemoList.length < 1;
-  const isSelect = id === selectedLayerId;
+  const isSelect = !isHide && id === selectedLayerId;
 
   function handleLayerClick() {
     if (isSelect) {
@@ -155,7 +155,7 @@ function LayerItem(props: LayerItemProps) {
               <input
                 onKeyDown={handleInputEnter}
                 onChange={handleLayerNameChange}
-                className="w-[70%] rounded-md bg-white border border-blue-400 px-xxs"
+                className="w-[70%] rounded-md bg-bodyBg border-itemBorder px-xxs"
                 value={layerName}
               ></input>
               <IconTrash
