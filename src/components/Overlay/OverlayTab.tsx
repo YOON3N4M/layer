@@ -1,8 +1,10 @@
 import useDataSync from "@/hooks/useDataSync";
+import { MemoPosition } from "@/types";
 import { IconPin, IconTrash } from "../svg";
 
 interface OverlayTabProps {
   memoId: number;
+  pos: MemoPosition;
 }
 
 function OverlayTab(props: OverlayTabProps) {

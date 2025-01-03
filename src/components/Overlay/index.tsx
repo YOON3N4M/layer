@@ -1,19 +1,15 @@
+import { useLayerList } from "@/state";
+import { Memo } from "@/types";
 import { cn } from "@/utils";
 import { motion } from "motion/react";
 import { HTMLAttributes, ReactNode, useState } from "react";
 import { useDrag } from "react-use-gesture";
+import OverlayTab from "./OverlayTab";
 
 export interface OverlayProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
-  x?: number;
-  y?: number;
-  hidden?: boolean;
+  memo: Memo;
 }
-/**
- * 드래그가 가능한 overlay 컨텐츠들에
- *
- * 활용 가능한 템플릿 컴포넌트
- */
 
 const overayVariants = {
   hidden: {
@@ -25,21 +21,29 @@ const overayVariants = {
 };
 
 function Overlay(props: OverlayProps) {
-  const { children, className, x = 0, y = 0, hidden } = props;
-  const [pos, setPos] = useState({ x: x, y: y });
+  const { children, className, memo } = props;
+  const { position = { x: 0, y: 0 }, parentLayerId, id } = memo;
+
+  const [pos, setPos] = useState(position);
   const bindPos = useDrag((params) => {
     setPos({
       x: params.offset[0],
       y: params.offset[1],
     });
   });
+  const layerList = useLayerList();
+
+  const parentLayer = layerList.find((layer) => layer.id === parentLayerId);
+  if (!parentLayer) return;
+
+  const isHide = parentLayer.isHide;
 
   console.log(pos);
   return (
     <motion.div
       variants={overayVariants}
       initial="hidden"
-      animate={hidden ? "hidden" : "show"}
+      animate={isHide ? "hidden" : "show"}
       exit="hidden"
       className={cn(
         className,
@@ -48,6 +52,7 @@ function Overlay(props: OverlayProps) {
       {...bindPos()}
       style={{ top: pos.y, left: pos.x }}
     >
+      <OverlayTab memoId={id} pos={pos} />
       {children}
     </motion.div>
   );

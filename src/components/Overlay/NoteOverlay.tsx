@@ -1,11 +1,7 @@
+import useDataSync from "@/hooks/useDataSync";
+import { NoteMemo } from "@/types";
 import { ChangeEvent, useEffect, useState } from "react";
 import Overlay, { OverlayProps } from ".";
-import { IconPin, IconTrash } from "../svg";
-import { Memo, NoteMemo } from "@/types";
-import { handleLocalStorage } from "@/utils/localstorage";
-import useDataSync from "@/hooks/useDataSync";
-import { useLayerList } from "@/state";
-import OverlayTab from "./OverlayTab";
 
 interface NoteOverlayProps extends OverlayProps {
   memo: NoteMemo;
@@ -17,14 +13,9 @@ function NoteOverlay(props: NoteOverlayProps) {
 
   const [body, setBody] = useState(memo.body);
   const { editMemo, removeMemo } = useDataSync();
-  const layerList = useLayerList();
 
   function handleTextareaChange(event: ChangeEvent<HTMLTextAreaElement>) {
     setBody(event.target.value);
-  }
-
-  function handleDeleteClick() {
-    removeMemo(id);
   }
 
   useEffect(() => {
@@ -39,16 +30,8 @@ function NoteOverlay(props: NoteOverlayProps) {
     return () => clearTimeout(timeoutId);
   }, [body]); // text와 savedText가 변경될 때 실행
 
-  const parentLayer = layerList.find(
-    (layer) => layer.id === memo.parentLayerId
-  );
-  if (!parentLayer) return;
-
-  const isHide = parentLayer.isHide;
-
   return (
-    <Overlay hidden={isHide}>
-      <OverlayTab memoId={id} />
+    <Overlay memo={memo}>
       <div className="mt-sm text-sm">
         <textarea
           value={body}

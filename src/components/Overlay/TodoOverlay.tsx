@@ -1,3 +1,7 @@
+import useDataSync from "@/hooks/useDataSync";
+import { useLayerList } from "@/state";
+import { Todo, TodoMemo } from "@/types";
+import { cn, generateNewTodoItem } from "@/utils";
 import {
   ChangeEvent,
   Dispatch,
@@ -6,13 +10,7 @@ import {
   useState,
 } from "react";
 import Overlay, { OverlayProps } from ".";
-import { IconPin, IconTrash } from "../svg";
-import { Memo, NoteMemo, Todo, TodoMemo } from "@/types";
-import { handleLocalStorage } from "@/utils/localstorage";
-import useDataSync from "@/hooks/useDataSync";
-import { useLayerList } from "@/state";
-import OverlayTab from "./OverlayTab";
-import { cn, generateNewTodoItem } from "@/utils";
+import { IconTrash } from "../svg";
 
 interface TodoOverlayProps extends OverlayProps {
   memo: TodoMemo;
@@ -47,16 +45,8 @@ function TodoOverlay(props: TodoOverlayProps) {
     setTodolist((prev) => [...prev, newTodoItem]);
   }
 
-  const parentLayer = layerList.find(
-    (layer) => layer.id === memo.parentLayerId
-  );
-  if (!parentLayer) return;
-
-  const isHide = parentLayer.isHide;
-
   return (
-    <Overlay hidden={isHide}>
-      <OverlayTab memoId={id} />
+    <Overlay memo={memo}>
       <div className="mt-sm text-sm px-sm group">
         <div className="flex flex-col gap-xxs">
           {todoList.map((todo, idx) => (
