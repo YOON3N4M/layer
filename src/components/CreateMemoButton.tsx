@@ -7,6 +7,8 @@ import { generateNewLayer, generateNewMemo } from "@/utils";
 import { handleLocalStorage } from "@/utils/localstorage";
 import useDataSync from "@/hooks/useDataSync";
 import { MemoType } from "@/types";
+import useClickOutside from "@/hooks/useOutsideEvent";
+import { motion } from "motion/react";
 
 interface CreateMemoButtonProps {}
 
@@ -18,6 +20,12 @@ function CreateMemoButton(props: CreateMemoButtonProps) {
   const [isHide, setIsHide] = useState(true);
 
   const { createLayer, createMemo } = useDataSync();
+
+  const ref = useClickOutside(() => {
+    if (!isHide) {
+      setIsHide(true);
+    }
+  });
 
   function handleHideClick() {
     setIsHide((prev) => !prev);
@@ -33,11 +41,14 @@ function CreateMemoButton(props: CreateMemoButtonProps) {
   }
 
   return (
-    <div className="fixed right-[5%] bottom-[10%] z-craete">
+    <div
+      ref={ref}
+      className="fixed right-[5%] bottom-[10%] z-craete rounded-full border shadow-md "
+    >
       {!isHide && (
         <div className="relative">
           <div className="absolute w-[300px] h-[450px] bg-white right-full bottom-0 translate-x-[10%]">
-            <div className="size-full flex flex-col">
+            <motion.div className="size-full flex flex-col">
               <button
                 onClick={handleCreateLayerClick}
                 className="w-full p-md border-b"
@@ -56,15 +67,15 @@ function CreateMemoButton(props: CreateMemoButtonProps) {
               >
                 새 할일
               </button>
-            </div>
+            </motion.div>
           </div>
         </div>
       )}
       <button
         onClick={handleHideClick}
-        className="group  bg-white rounded-full p-xl hover:bg-slate-200 transition-colors"
+        className="group  bg-white rounded-full p-xl hover:bg-blue-100 transition-colors"
       >
-        <span className="opacity-40 group-hover:text-black text-xl">
+        <span className="opacity-40 text-xl">
           <IconPencilePlus />
         </span>
       </button>
