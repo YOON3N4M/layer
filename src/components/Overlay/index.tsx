@@ -43,7 +43,7 @@ function Overlay(props: OverlayProps) {
       exit="hidden"
       className={cn(
         className,
-        "relative cursor-pointer z-overlay border shadow-sm rounded-[4px] bg-white w-min min-w-[300px] pb-sm"
+        "absolute cursor-pointer z-overlay border shadow-sm rounded-[4px] bg-white w-min min-w-[300px] pb-sm"
       )}
       {...bindPos()}
       style={{ top: pos.y, left: pos.x }}

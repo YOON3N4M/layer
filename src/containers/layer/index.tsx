@@ -28,7 +28,7 @@ function LayerContainer(props: LayerContainerProps) {
   return (
     <div className="flex">
       {/* memo display */}
-      <div className="flex mt-[100px]">
+      <div className="flex mt-[100px] relative">
         {memoList.map((memo) => (
           <RenderOverlay key={memo.id} memo={memo} />
         ))}
