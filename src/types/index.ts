@@ -14,6 +14,7 @@ export interface MemoPosition {
 export interface MemoTemplate {
   id: number;
   parentLayerId: number;
+  isPin: boolean;
   position?: MemoPosition;
 }
 

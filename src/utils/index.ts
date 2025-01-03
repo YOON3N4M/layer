@@ -17,6 +17,7 @@ export function generateNewMemo(type: MemoType, parentLayerId: number): Memo {
     id: Date.now(),
     parentLayerId,
     type,
+    isPin: false,
   };
 
   switch (type) {
@@ -50,4 +51,23 @@ export function generateNewLayer(name: string): Layer {
     isHide: false,
     name,
   };
+}
+
+/**
+ * 두 배열을 비교해 차이 여부를 boolean으로 반환
+ */
+export function checkArrayDiffer(a: any[], b: any[]) {
+  const result = JSON.stringify(a) === JSON.stringify(b);
+  return result;
+}
+/**
+ * 두 객체를 비교해 차이 여부를 boolean으로 반환
+ */
+export function checkObjectDiffer(obj1: any, obj2: any) {
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+
+  if (keys1.length !== keys2.length) return true;
+
+  return !keys1.every((key) => obj1[key] === obj2[key]);
 }

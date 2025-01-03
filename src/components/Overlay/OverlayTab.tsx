@@ -1,19 +1,20 @@
 import useDataSync from "@/hooks/useDataSync";
-import { MemoPosition } from "@/types";
-import { IconPin, IconTrash } from "../svg";
+import { Memo, MemoPosition } from "@/types";
+import { IconTrash } from "../svg";
 
 interface OverlayTabProps {
-  memoId: number;
-  pos: MemoPosition;
+  memo: Memo;
+  //   pos: MemoPosition;
 }
 
 function OverlayTab(props: OverlayTabProps) {
-  const { memoId } = props;
+  const { memo } = props;
+  const { id, isPin } = memo;
 
-  const { removeMemo } = useDataSync();
+  const { removeMemo, editMemo } = useDataSync();
 
   function handleDeleteClick() {
-    removeMemo(memoId);
+    removeMemo(id);
   }
 
   return (
@@ -21,9 +22,10 @@ function OverlayTab(props: OverlayTabProps) {
       <button onClick={handleDeleteClick} className="opacity-30">
         <IconTrash />
       </button>
-      <button className="opacity-30">
-        <IconPin />
-      </button>
+
+      {/* <button onClick={handlePinClick} className="opacity-30">
+        <IconPin fill={isPin ? "black" : "white"} />
+      </button> */}
     </div>
   );
 }

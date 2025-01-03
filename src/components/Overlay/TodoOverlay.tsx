@@ -1,7 +1,7 @@
 import useDataSync from "@/hooks/useDataSync";
 import { useLayerList } from "@/state";
 import { Todo, TodoMemo } from "@/types";
-import { cn, generateNewTodoItem } from "@/utils";
+import { checkArrayDiffer, cn, generateNewTodoItem } from "@/utils";
 import {
   ChangeEvent,
   Dispatch,
@@ -28,8 +28,10 @@ function TodoOverlay(props: TodoOverlayProps) {
   //     setBody(event.target.value);
   //   }
 
+  const isChange = !checkArrayDiffer(memo.todoList, todoList);
+
   useEffect(() => {
-    console.log(todoList);
+    if (!isChange) return;
     // 디바운스 효과: 1초 후에 저장
     const timeoutId = setTimeout(() => {
       const newMemo = { ...memo, todoList };

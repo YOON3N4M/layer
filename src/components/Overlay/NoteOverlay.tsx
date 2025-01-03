@@ -18,7 +18,10 @@ function NoteOverlay(props: NoteOverlayProps) {
     setBody(event.target.value);
   }
 
+  const isChange = body !== memo.body;
+
   useEffect(() => {
+    if (!isChange) return;
     // 디바운스 효과: 1초 후에 저장
     const timeoutId = setTimeout(() => {
       const newMemo = { ...memo, body };

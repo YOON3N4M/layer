@@ -1,11 +1,10 @@
+import useDataSync from "@/hooks/useDataSync";
 import { useLayerList } from "@/state";
 import { Memo } from "@/types";
-import { cn } from "@/utils";
-import { motion } from "motion/react";
+import { checkObjectDiffer, cn } from "@/utils";
+import { motion, useMotionValue, useMotionValueEvent } from "motion/react";
 import { HTMLAttributes, ReactNode, useEffect, useState } from "react";
-import { useDrag } from "react-use-gesture";
 import OverlayTab from "./OverlayTab";
-import useDataSync from "@/hooks/useDataSync";
 
 export interface OverlayProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
@@ -23,21 +22,28 @@ const overayVariants = {
 
 function Overlay(props: OverlayProps) {
   const { children, className, memo } = props;
-  const { position = { x: 0, y: 0 }, parentLayerId, id } = memo;
+  const { position = { x: 0, y: 0 }, parentLayerId, id, isPin } = memo;
 
   const [pos, setPos] = useState(position);
-  const bindPos = useDrag((params) => {
-    setPos({
-      x: params.offset[0],
-      y: params.offset[1],
-    });
+
+  const posX = useMotionValue(position.x);
+  useMotionValueEvent(posX, "change", (latest) => {
+    setPos((prev) => ({ ...prev, x: latest }));
   });
+
+  const posY = useMotionValue(position.y);
+  useMotionValueEvent(posY, "change", (latest) => {
+    setPos((prev) => ({ ...prev, y: latest }));
+  });
+
   const { editMemo } = useDataSync();
   const layerList = useLayerList();
 
+  const isPositionChange = !checkObjectDiffer(pos, position);
   // 드래그 후 위치 저장
   useEffect(() => {
-    // 디바운스 효과: 1초 후에 저장
+    if (isPositionChange) return;
+
     const timeoutId = setTimeout(() => {
       const newMemo = { ...memo, position: pos };
       editMemo(newMemo);
@@ -52,24 +58,25 @@ function Overlay(props: OverlayProps) {
   if (!parentLayer) return;
 
   const isHide = parentLayer.isHide;
-  const isInitPosition = pos.x === 0 && pos.y === 0;
+  // const isInitPosition = pos.x === 0 && pos.y === 0;
 
-  console.log(pos);
   return (
     <motion.div
+      drag
+      dragMomentum={false}
       variants={overayVariants}
       initial="hidden"
       animate={isHide ? "hidden" : "show"}
       exit="hidden"
       className={cn(
         className,
-        "cursor-pointer z-overlay border shadow-sm rounded-[4px] bg-white w-min min-w-[300px] pb-sm",
-        isInitPosition ? "relative" : "absolute"
+        "cursor-pointer z-overlay border shadow-sm rounded-[4px] bg-white w-min min-w-[300px] pb-sm"
+        // isInitPosition ? "relative" : "absolute"
       )}
-      {...bindPos()}
-      style={{ top: pos.y, left: pos.x, zIndex: zIndex }}
+      // {...bindPos()}
+      style={{ y: posY, x: posX, zIndex: zIndex }}
     >
-      <OverlayTab memoId={id} pos={pos} />
+      <OverlayTab memo={memo} />
       {children}
     </motion.div>
   );
