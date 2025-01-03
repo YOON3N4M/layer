@@ -37,7 +37,7 @@ function SideMenu(props: SideMenuProps) {
   return (
     <div
       className={cn(
-        "fixed right-0 top-0 h-screen border shadow-sm z-sideMenu w-[250px] bg-white backdrop-blur-sm transition-transform",
+        "fixed right-0 h-[80dvh] y-center border shadow-sm z-sideMenu w-[250px] bg-black backdrop-blur-sm transition-transform",
         isHide && "translate-x-full"
       )}
     >
@@ -51,9 +51,12 @@ function SideMenu(props: SideMenuProps) {
           {isHide ? <IconDoubleLeftArrow /> : <IconDoubleRightArrow />}
         </button>
         <div className="size-full">
-          {layerList.map((layer) => (
-            <LayerItem key={layer.id} layer={layer} />
-          ))}
+          <div className="p-md border-b border-itemBorder">Layer</div>
+          <div className="size-full">
+            {layerList.map((layer) => (
+              <LayerItem key={layer.id} layer={layer} />
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -136,20 +139,17 @@ function LayerItem(props: LayerItemProps) {
     <div
       onClick={handleLayerClick}
       className={cn(
-        "transition-colors cursor-pointer",
+        "transition-colors cursor-pointer border-itemBorder border-b",
         isHide && "text-gray-400",
-        isSelect && "bg-blue-50 border border-blue-400"
+        isSelect && "border !border-blue-400"
       )}
       onContextMenu={handleLayerRightClick}
     >
       <div
-        className={cn(
-          "w-full py-sm px-md border-b flex",
-          isSelect && "border-gray-300"
-        )}
+        className={cn("w-full py-sm px-md flex", isSelect && "border-gray-300")}
       >
         <div className="w-full flex items-center gap-sm">
-          <IconLayer />
+          {/* <IconLayer /> */}
           {isEditMode ? (
             <div ref={ref} className="w-full flex items-center">
               <input
@@ -187,8 +187,8 @@ function MemoListItem({ memo }: { memo: Memo }) {
   const { id } = memo;
 
   return (
-    <div className="px-xl py-xs border-b text-sm  flex items-center gap-xs">
-      <span>·</span>
+    <div className="px-xl py-xs text-sm flex items-center gap-xs">
+      {/* <span>·</span> */}
       <span className="shrink-0">
         <MemoIcon type={memo.type} />
       </span>

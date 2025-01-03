@@ -60,7 +60,7 @@ function TodoOverlay(props: TodoOverlayProps) {
             />
           ))}
         </div>
-        <div className="w-full text-center text-gray-400 bg-gray-100 mt-sm transition-opacity opacity-0 group-hover:opacity-100">
+        <div className="w-full text-center text-text mt-sm rounded-md bg-bodyBg transition-opacity opacity-0 group-hover:opacity-100">
           <button className="size-full" onClick={addTodoItem}>
             할일 추가
           </button>
@@ -143,18 +143,15 @@ function TodoListItem(props: TodoListItemProps) {
       <input
         onChange={handleOnChangeTodoBody}
         className={cn(
-          "transition-colors outline-none",
-          isDone && "text-gray-400 line-through"
+          "transition-colors bg-black outline-none",
+          isDone && "opacity-70 line-through"
         )}
         placeholder={bodyData}
         value={body}
       ></input>
       <button
         onClick={handleOnclickDelete}
-        className={cn(
-          "ml-auto shrink-0 text-gray-400 opacity-0",
-          isHover && "!opacity-100"
-        )}
+        className={cn("ml-auto shrink-0  opacity-0", isHover && "!opacity-100")}
       >
         <IconTrash />
       </button>

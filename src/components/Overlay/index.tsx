@@ -71,8 +71,8 @@ function Overlay(props: OverlayProps) {
       exit="hidden"
       className={cn(
         className,
-        "absolute cursor-pointer z-overlay border shadow-sm rounded-[4px] bg-white w-min min-w-[300px] pb-sm transition-colors",
-        isSelected && "border-blue-400"
+        "absolute cursor-pointer z-overlay border border-itemBorder shadow-sm rounded-[4px] bg-black w-min min-w-[300px] pb-sm transition-colors",
+        isSelected && "!border-blue-400"
       )}
       style={{ y: posY, x: posX, zIndex: zIndex }}
     >

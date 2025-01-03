@@ -37,7 +37,11 @@ const config: Config = {
         xxxl: "40px",
         nav: "45px",
       },
-      colors: {},
+      colors: {
+        bodyBg: "#242423",
+        text: "#DDDDDD",
+        itemBorder: "#dddddd59",
+      },
       keyframes: {
         fadeLeft: {
           "0%": { transform: "translateX(-100%)" },
