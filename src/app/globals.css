@@ -30,3 +30,23 @@ body {
     @apply max-w-[1024px] w-full mx-auto px-[22px];
   }
 }
+
+* {
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #000000;
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #242423;
+    border-radius: 10px;
+    width: 4px;
+  }
+}
+textarea::-webkit-scrollbar {
+  display: none;
+}

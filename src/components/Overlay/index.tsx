@@ -105,6 +105,8 @@ function Overlay(props: OverlayProps) {
   if (!parentLayer) return;
 
   const isHide = parentLayer.isHide;
+  const isNote = memo.type === "memo";
+  const isCanvas = memo.type === "canvas";
 
   return (
     <motion.div
@@ -118,8 +120,9 @@ function Overlay(props: OverlayProps) {
       onMouseUp={handleMouseUp}
       className={cn(
         className,
-        "absolute z-overlay border border-itemBorder shadow-sm rounded-[4px] bg-black w-min min-w-[300px] transition-colors",
-        isSelected && "!border-blue-400"
+        "absolute z-overlay border border-itemBorder shadow-sm rounded-[4px] bg-black w-max min-w-[300px] min-h-[300px] transition-colors",
+        isSelected && "!border-blue-400",
+        !isCanvas && "max-h-[300px]"
       )}
       style={{
         y: posY,
@@ -129,15 +132,16 @@ function Overlay(props: OverlayProps) {
         height: size.height,
       }}
     >
-      <div className="relative size-full pb-sm">
+      <div className="relative size-full pb-sm flex flex-col">
         <OverlayTab memo={memo} />
-        {children}
-        {/* 리사이즈 영역 */}
         <div
-          // onMouseDown={handleResizeMouseDown}
-          // onMouseMove={handleResizeMove}
-          className="absolute bottom-0 right-0 cursor-se-resize size-[15px]"
-        ></div>
+          className={cn(
+            "flex-1",
+            isNote ? "overflow-y-hidden" : "overflow-y-auto"
+          )}
+        >
+          {children}
+        </div>
       </div>
     </motion.div>
   );

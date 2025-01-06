@@ -35,7 +35,7 @@ function NoteOverlay(props: NoteOverlayProps) {
 
   return (
     <Overlay memo={memo}>
-      <div className="size-full mt-sm text-sm">
+      <div className="size-auto mt-sm text-sm">
         <textarea
           value={body}
           onChange={handleTextareaChange}
