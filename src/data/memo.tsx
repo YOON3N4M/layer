@@ -9,6 +9,6 @@ export interface MemoData {
 }
 
 export const MEMO_DATA_LIST: MemoData[] = [
-  { eng: "todo", kor: "할 일", icon: <IconCheckList /> },
   { eng: "memo", kor: "메모", icon: <IconNote /> },
+  { eng: "todo", kor: "할 일", icon: <IconCheckList /> },
 ];
