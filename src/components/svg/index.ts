@@ -13,3 +13,4 @@ export { IoCloseOutline as IconXSign } from "react-icons/io5";
 export { TbCheckbox as IconCheckList } from "react-icons/tb";
 export { TbChevronsRight as IconDoubleRightArrow } from "react-icons/tb";
 export { TbChevronsLeft as IconDoubleLeftArrow } from "react-icons/tb";
+export { TbEaseInOut as IconCanvas } from "react-icons/tb";

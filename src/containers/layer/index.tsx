@@ -1,6 +1,7 @@
 "use client";
 
 import Overlay from "@/components/Overlay";
+import CanvasOverlay from "@/components/Overlay/CanvasOverlay";
 import NoteOverlay from "@/components/Overlay/NoteOverlay";
 import TodoOverlay from "@/components/Overlay/TodoOverlay";
 import { useMemoActions, useMemoList } from "@/state";
@@ -47,5 +48,7 @@ function RenderOverlay({ memo }: { memo: Memo }) {
       return <NoteOverlay memo={memo} />;
     case "todo":
       return <TodoOverlay memo={memo} />;
+    case "canvas":
+      return <CanvasOverlay memo={memo} />;
   }
 }

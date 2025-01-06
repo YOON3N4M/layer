@@ -2,6 +2,7 @@
 
 import { ChangeEvent, KeyboardEvent, MouseEvent, useState } from "react";
 import {
+  IconCanvas,
   IconCheckList,
   IconDoubleLeftArrow,
   IconDoubleRightArrow,
@@ -206,6 +207,10 @@ function MemoPreview({ memo }: { memo: Memo }) {
       break;
     case "todo":
       spanString = memo.todoList[0] ? memo.todoList[0].body : "";
+      break;
+    case "canvas":
+      spanString = "그리기";
+      break;
   }
 
   return <span className="truncate">{spanString}</span>;
@@ -217,5 +222,7 @@ function MemoIcon({ type }: { type: MemoType }) {
       return <IconNote />;
     case "todo":
       return <IconCheckList />;
+    case "canvas":
+      return <IconCanvas />;
   }
 }

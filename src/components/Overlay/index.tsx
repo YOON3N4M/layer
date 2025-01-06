@@ -106,12 +106,13 @@ function Overlay(props: OverlayProps) {
 
   const isHide = parentLayer.isHide;
   const isNote = memo.type === "memo";
+  const isTodo = memo.type === "todo";
   const isCanvas = memo.type === "canvas";
 
   return (
     <motion.div
       ref={overlayRef}
-      drag={isResizing ? false : true}
+      drag={false}
       dragMomentum={false}
       variants={overayVariants}
       initial="hidden"
@@ -132,12 +133,14 @@ function Overlay(props: OverlayProps) {
         height: size.height,
       }}
     >
-      <div className="relative size-full pb-sm flex flex-col">
+      <div className={cn("relative size-full pb-sm flex flex-col")}>
         <OverlayTab memo={memo} />
         <div
           className={cn(
             "flex-1",
-            isNote ? "overflow-y-hidden" : "overflow-y-auto"
+            isNote && "overflow-y-hidden",
+            isTodo && "overflow-y-auto",
+            isCanvas && "overflow-visible w-max h-max"
           )}
         >
           {children}
