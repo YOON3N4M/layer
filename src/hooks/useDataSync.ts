@@ -1,4 +1,7 @@
-import { useSelectedLayerId } from "@/containers/layer/state";
+import {
+  useLayerContainerActions,
+  useSelectedLayerId,
+} from "@/containers/layer/state";
 import { useLayerList, useMemoActions, useMemoList } from "@/state";
 import { Layer, Memo, MemoType } from "@/types";
 import { generateNewLayer, generateNewMemo } from "@/utils";
@@ -19,7 +22,7 @@ function useDataSync() {
 
   const selectedLayerId = useSelectedLayerId();
   const memoList = useMemoList();
-
+  const { setSelectedLayerId } = useLayerContainerActions();
   //레이어
   function createLayer() {
     const newLayer = generateNewLayer(`layer ${layerList.length}`);
@@ -36,24 +39,35 @@ function useDataSync() {
     const filteredMemoList = memoList.filter(
       (memo) => memo.parentLayerId !== layerId
     );
+
+    console.log(filteredMemoList);
     handleLocalStorage.setMemoList(filteredMemoList);
     handleLocalStorage.removeLayer(layerId);
 
     removeStateLayer(layerId);
     setMemoList(filteredMemoList);
+    setSelectedLayerId(null);
+    console.log(selectedLayerId);
   }
   // 메모
   function createMemo(type: MemoType) {
     let parentLayer = layerList[layerList.length - 1];
-
+    console.log(parentLayer);
     // 레어아가 하나도 존재하지 않으면 새 레이어도 생성
     if (!parentLayer) {
       parentLayer = createLayer();
     }
 
-    const newMemo = generateNewMemo(type, selectedLayerId ?? parentLayer.id);
+    let newMemo;
+    if (selectedLayerId) {
+      newMemo = generateNewMemo(type, selectedLayerId);
+    } else {
+      newMemo = generateNewMemo(type, parentLayer.id);
+    }
+
     handleLocalStorage.addMemo(newMemo);
     addMemo(newMemo);
+    console.log(parentLayer, selectedLayerId, newMemo);
   }
 
   function editMemo(memo: Memo) {
