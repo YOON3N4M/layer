@@ -24,12 +24,14 @@ export interface OverlayProps extends HTMLAttributes<HTMLDivElement> {
   memo: Memo;
 }
 
-const overayVariants = {
+const overayVariants: any = {
   hidden: {
     opacity: 0,
+    pointerEvents: "none",
   },
   show: {
     opacity: 1,
+    pointerEvents: "auto",
   },
 };
 
