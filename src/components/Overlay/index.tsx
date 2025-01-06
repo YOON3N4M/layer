@@ -2,7 +2,12 @@ import useDataSync from "@/hooks/useDataSync";
 import { useLayerList } from "@/state";
 import { Memo } from "@/types";
 import { checkObjectDiffer, cn } from "@/utils";
-import { motion, useMotionValue, useMotionValueEvent } from "motion/react";
+import {
+  motion,
+  useDragControls,
+  useMotionValue,
+  useMotionValueEvent,
+} from "motion/react";
 import {
   HTMLAttributes,
   MouseEvent,
@@ -45,6 +50,9 @@ function Overlay(props: OverlayProps) {
   });
   const [isResizing, setIsResizing] = useState(false);
   const overlayRef = useRef<HTMLDivElement>(null);
+  const overlayTabRef = useRef<HTMLDivElement>(null);
+
+  const controls = useDragControls();
 
   const { editMemo } = useDataSync();
   const layerList = useLayerList();
@@ -112,8 +120,10 @@ function Overlay(props: OverlayProps) {
   return (
     <motion.div
       ref={overlayRef}
-      drag={false}
+      drag
       dragMomentum={false}
+      dragListener={false}
+      dragControls={controls}
       variants={overayVariants}
       initial="hidden"
       animate={isHide ? "hidden" : "show"}
@@ -134,7 +144,7 @@ function Overlay(props: OverlayProps) {
       }}
     >
       <div className={cn("relative size-full pb-sm flex flex-col")}>
-        <OverlayTab memo={memo} />
+        <OverlayTab memo={memo} controls={controls} />
         <div
           className={cn(
             "flex-1",
