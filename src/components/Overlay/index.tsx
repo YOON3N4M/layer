@@ -3,7 +3,14 @@ import { useLayerList } from "@/state";
 import { Memo } from "@/types";
 import { checkObjectDiffer, cn } from "@/utils";
 import { motion, useMotionValue, useMotionValueEvent } from "motion/react";
-import { HTMLAttributes, ReactNode, useEffect, useState } from "react";
+import {
+  HTMLAttributes,
+  MouseEvent,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import OverlayTab from "./OverlayTab";
 import { useSelectedLayerId } from "@/containers/layer/state";
 
@@ -23,9 +30,22 @@ const overayVariants = {
 
 function Overlay(props: OverlayProps) {
   const { children, className, memo } = props;
-  const { position = { x: 0, y: 0 }, parentLayerId, id, isPin } = memo;
+  const {
+    position = { x: 0, y: 0 },
+    parentLayerId,
+    id,
+    isPin,
+    size: sizeData,
+  } = memo;
 
   const [pos, setPos] = useState(position);
+  const [size, setSize] = useState({
+    width: sizeData?.width,
+    height: sizeData?.height,
+  });
+  const [isResizing, setIsResizing] = useState(false);
+  const overlayRef = useRef<HTMLDivElement>(null);
+
   const { editMemo } = useDataSync();
   const layerList = useLayerList();
   const selectedLayerId = useSelectedLayerId();
@@ -41,18 +61,43 @@ function Overlay(props: OverlayProps) {
     setPos((prev) => ({ ...prev, y: latest }));
   });
 
-  const isPositionChange = !checkObjectDiffer(pos, position);
-  // 드래그 후 위치 저장
-  useEffect(() => {
-    if (isPositionChange) return;
+  function handleResizeMouseDown() {
+    setIsResizing(true);
+  }
+  function handleResizeMove(event: MouseEvent<HTMLDivElement>) {
+    if (!isResizing) return;
+    if (!size.width && !size.height) return;
+    // 마우스 움직임에 따라 크기 변경
+    setSize((prevSize) => ({
+      width: prevSize.width! + event.movementX,
+      height: prevSize.height! + event.movementY,
+    }));
+  }
 
-    const timeoutId = setTimeout(() => {
+  function handleMouseUp() {
+    const isPositionChange = checkObjectDiffer(pos, position);
+    const isSizeChange = {};
+
+    if (isPositionChange) {
       const newMemo = { ...memo, position: pos };
       editMemo(newMemo);
-    }, 1000);
+    }
 
-    return () => clearTimeout(timeoutId);
-  }, [pos]);
+    // if (isResizing) {
+    // }
+
+    // setIsResizing(false);
+  }
+
+  // 저장된 메모 데이터애 사이즈 정보가 없을 경우 기본 사이즈 할당
+  useEffect(() => {
+    if (sizeData) return;
+
+    const width = overlayRef.current?.offsetWidth;
+    const height = overlayRef.current?.offsetHeight;
+
+    setSize((prev) => ({ ...prev, width, height }));
+  }, []);
 
   const parentLayer = layerList.find((layer) => layer.id === parentLayerId);
   const layerIndex = layerList.findIndex((layer) => layer.id === parentLayerId);
@@ -63,21 +108,37 @@ function Overlay(props: OverlayProps) {
 
   return (
     <motion.div
-      drag
+      ref={overlayRef}
+      drag={isResizing ? false : true}
       dragMomentum={false}
       variants={overayVariants}
       initial="hidden"
       animate={isHide ? "hidden" : "show"}
       exit="hidden"
+      onMouseUp={handleMouseUp}
       className={cn(
         className,
-        "absolute cursor-pointer z-overlay border border-itemBorder shadow-sm rounded-[4px] bg-black w-min min-w-[300px] pb-sm transition-colors",
+        "absolute z-overlay border border-itemBorder shadow-sm rounded-[4px] bg-black w-min min-w-[300px] transition-colors",
         isSelected && "!border-blue-400"
       )}
-      style={{ y: posY, x: posX, zIndex: zIndex }}
+      style={{
+        y: posY,
+        x: posX,
+        zIndex: zIndex,
+        width: size.width,
+        height: size.height,
+      }}
     >
-      <OverlayTab memo={memo} />
-      {children}
+      <div className="relative size-full pb-sm">
+        <OverlayTab memo={memo} />
+        {children}
+        {/* 리사이즈 영역 */}
+        <div
+          // onMouseDown={handleResizeMouseDown}
+          // onMouseMove={handleResizeMove}
+          className="absolute bottom-0 right-0 cursor-se-resize size-[15px]"
+        ></div>
+      </div>
     </motion.div>
   );
 }

@@ -16,6 +16,7 @@ export interface MemoTemplate {
   parentLayerId: number;
   isPin: boolean;
   position?: MemoPosition;
+  size?: { width?: number; height?: number };
 }
 
 export interface NoteMemo extends MemoTemplate {

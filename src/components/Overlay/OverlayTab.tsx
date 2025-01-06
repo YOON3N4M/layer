@@ -18,7 +18,7 @@ function OverlayTab(props: OverlayTabProps) {
   }
 
   return (
-    <div className="w-full px-sm py-xs flex justify-end border-b border-b-itemBorder gap-xs text-sm">
+    <div className="w-full px-sm py-xs flex cursor-pointer justify-end border-b border-b-itemBorder gap-xs text-sm">
       <button
         onClick={handleDeleteClick}
         className="opacity-40 hover:opacity-60 transition-opacity"

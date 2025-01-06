@@ -49,7 +49,7 @@ function TodoOverlay(props: TodoOverlayProps) {
 
   return (
     <Overlay memo={memo}>
-      <div className="mt-sm text-sm px-sm group">
+      <div className="mt-sm text-sm px-sm group size-full">
         <div className="flex flex-col gap-xxs">
           {todoList.map((todo, idx) => (
             <TodoListItem
@@ -129,7 +129,7 @@ function TodoListItem(props: TodoListItemProps) {
 
   return (
     <div
-      className="flex items-center gap-xs"
+      className=" flex items-center gap-xs"
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
