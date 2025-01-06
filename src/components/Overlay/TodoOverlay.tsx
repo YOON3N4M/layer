@@ -133,7 +133,7 @@ function TodoListItem(props: TodoListItemProps) {
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
-      <div
+      <button
         onClick={handleOnClickCheckBox}
         className={cn(
           "size-[16px] border-2 rounded-md border-blue-300 shrink-0 transition-colors",
@@ -143,7 +143,7 @@ function TodoListItem(props: TodoListItemProps) {
       <input
         onChange={handleOnChangeTodoBody}
         className={cn(
-          "transition-colors bg-black outline-none",
+          "transition-colors bg-black outline-none flex-1",
           isDone && "opacity-70 line-through"
         )}
         placeholder={bodyData}
