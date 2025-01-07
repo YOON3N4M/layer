@@ -8,6 +8,7 @@ import ToastPortal from "@/components/toast/ToastPortal";
 import Header from "@/components/Header";
 import SideMenu from "@/components/SideMenu";
 import CreateMemoButton from "@/components/CreateMemoButton";
+import Controller from "@/components/Controller";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -31,6 +32,7 @@ export default function RootLayout({
       <body className={cn(pretendard.variable)}>
         <Header />
         <SideMenu />
+        <Controller />
         <CreateMemoButton />
         {children}
         <ModalPortal />

@@ -14,3 +14,4 @@ export { TbCheckbox as IconCheckList } from "react-icons/tb";
 export { TbChevronsRight as IconDoubleRightArrow } from "react-icons/tb";
 export { TbChevronsLeft as IconDoubleLeftArrow } from "react-icons/tb";
 export { TbEaseInOut as IconCanvas } from "react-icons/tb";
+export { TbArrowsMinimize as IconMinimize } from "react-icons/tb";
