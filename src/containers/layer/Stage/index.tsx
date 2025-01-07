@@ -41,7 +41,7 @@ function Stage(props: StageProps) {
       event.key === ZOOM_TARGET_KEYBOARD || event.key === DRAG_TARGET_KEYBOARD;
 
     if (isTargetKeydown) {
-      event.preventDefault();
+      // event.preventDefault();
       setIsKeydown(true);
     }
   }

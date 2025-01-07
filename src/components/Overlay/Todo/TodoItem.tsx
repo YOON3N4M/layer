@@ -1,9 +1,11 @@
 import { IconTrash } from "@/components/svg";
+import useDataSync from "@/hooks/useDataSync";
 import { Todo } from "@/types";
-import { cn } from "@/utils";
+import { cn, generateNewTodoItem } from "@/utils";
 import {
   ChangeEvent,
   Dispatch,
+  KeyboardEvent,
   SetStateAction,
   useEffect,
   useState,
@@ -18,6 +20,10 @@ interface TodoListItemProps {
 export default function TodoListItem(props: TodoListItemProps) {
   const { todo, index, setTodolist } = props;
   const { isDone: isDoneData, body: bodyData, id } = todo;
+
+  const {} = useDataSync();
+
+  const [isShiftDown, setIsShiftdown] = useState(false);
 
   const [isDone, setisDone] = useState(isDoneData);
   const [body, setBody] = useState(bodyData);
@@ -53,6 +59,40 @@ export default function TodoListItem(props: TodoListItemProps) {
     });
   }
 
+  function handleKeydown(event: KeyboardEvent<HTMLInputElement>) {
+    console.log(event.key);
+
+    if (event.key === "Shift") {
+      setIsShiftdown(true);
+    }
+
+    if (event.key === "Backspace") {
+      // 삭제
+      if (body === "") {
+        setTodolist((prevTodoList) => {
+          const filtered = prevTodoList.filter((item) => item.id !== id);
+          return filtered;
+        });
+      }
+    }
+    // 추가
+    if (event.key === "Enter") {
+      if (event.nativeEvent.isComposing) {
+        return;
+      }
+      if (isShiftDown) return;
+      console.log("생성");
+      const newTodoItem = generateNewTodoItem();
+      setTodolist((prev) => [...prev, newTodoItem]);
+    }
+  }
+
+  function handleKeyUp(event: KeyboardEvent<HTMLInputElement>) {
+    if (event.key === "Shift") {
+      setIsShiftdown(false);
+    }
+  }
+
   useEffect(() => {
     if (body === "") return;
 
@@ -66,11 +106,12 @@ export default function TodoListItem(props: TodoListItemProps) {
 
   return (
     <div
-      className=" flex items-center gap-xs"
+      className=" flex items-start gap-xs"
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
       <button
+        tabIndex={-1}
         onClick={handleOnClickCheckBox}
         className={cn(
           "size-[16px] border-2 rounded-md border-blue-300 shrink-0 transition-colors",
@@ -83,10 +124,12 @@ export default function TodoListItem(props: TodoListItemProps) {
           "transition-colors bg-black outline-none flex-1",
           isDone && "opacity-70 line-through"
         )}
-        placeholder={bodyData}
+        onKeyDown={handleKeydown}
+        onKeyUp={handleKeyUp}
         value={body}
       ></input>
       <button
+        tabIndex={-1}
         onClick={handleOnclickDelete}
         className={cn("ml-auto shrink-0  opacity-0", isHover && "!opacity-100")}
       >
