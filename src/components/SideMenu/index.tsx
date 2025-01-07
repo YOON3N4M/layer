@@ -57,9 +57,14 @@ function SideMenu(props: SideMenuProps) {
         >
           {isHide ? <IconDoubleLeftArrow /> : <IconDoubleRightArrow />}
         </button>
-        <div className="size-full">
+        <div className="size-full flex flex-col">
           <div className="p-md border-b border-itemBorder">Layer</div>
-          <Reorder.Group axis="y" values={layerList} onReorder={handleReorder}>
+          <Reorder.Group
+            className="overflow-y-auto flex-1"
+            axis="y"
+            values={layerList}
+            onReorder={handleReorder}
+          >
             {layerList.map((layer) => (
               <Reorder.Item key={`layer-${layer.id}`} value={layer}>
                 <LayerItem layer={layer} />
