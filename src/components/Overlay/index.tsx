@@ -19,6 +19,7 @@ import {
 } from "react";
 import OverlayTab from "./OverlayTab";
 import { useSelectedLayerId } from "@/containers/layer/state";
+import useDragPosition from "@/hooks/useDragPosition";
 
 export interface OverlayProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
@@ -47,7 +48,6 @@ function Overlay(props: OverlayProps) {
     size: sizeData,
   } = memo;
 
-  const [pos, setPos] = useState(position);
   const [size, setSize] = useState({
     width: sizeData?.width,
     height: sizeData?.height,
@@ -63,15 +63,7 @@ function Overlay(props: OverlayProps) {
   const selectedLayerId = useSelectedLayerId();
   const isSelected = selectedLayerId === memo.parentLayerId;
 
-  const posX = useMotionValue(position.x);
-  useMotionValueEvent(posX, "change", (latest) => {
-    setPos((prev) => ({ ...prev, x: latest }));
-  });
-
-  const posY = useMotionValue(position.y);
-  useMotionValueEvent(posY, "change", (latest) => {
-    setPos((prev) => ({ ...prev, y: latest }));
-  });
+  const { motionX, motionY, pos } = useDragPosition(position);
 
   function handleResizeMouseDown() {
     setIsResizing(true);
@@ -141,8 +133,8 @@ function Overlay(props: OverlayProps) {
         !isCanvas && "max-h-[300px]"
       )}
       style={{
-        y: posY,
-        x: posX,
+        y: motionY,
+        x: motionX,
         zIndex: zIndex,
         width: size.width,
         height: size.height,
