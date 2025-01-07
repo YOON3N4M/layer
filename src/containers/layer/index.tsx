@@ -7,7 +7,8 @@ import TodoOverlay from "@/components/Overlay/TodoOverlay";
 import { useMemoActions, useMemoList } from "@/state";
 import { Memo } from "@/types";
 import { handleLocalStorage } from "@/utils/localstorage";
-import { useEffect } from "react";
+import { RefObject, useEffect, useRef } from "react";
+import Stage from "./Stage";
 
 interface LayerContainerProps {}
 
@@ -18,6 +19,8 @@ function LayerContainer(props: LayerContainerProps) {
 
   const memoList = useMemoList();
 
+  const stageRef = useRef<HTMLDivElement>(null);
+
   // 초기 로딩
   useEffect(() => {
     const localLayerList = handleLocalStorage.getLayer();
@@ -27,28 +30,31 @@ function LayerContainer(props: LayerContainerProps) {
   }, []);
 
   return (
-    <div className="flex">
-      {/* memo display */}
-      <div className="flex mt-[100px] relative">
-        {memoList.map((memo) => (
-          <RenderOverlay key={memo.id} memo={memo} />
-        ))}
-      </div>
-    </div>
+    <Stage stageRef={stageRef}>
+      {memoList.map((memo) => (
+        <RenderOverlay stageRef={stageRef} key={memo.id} memo={memo} />
+      ))}
+    </Stage>
   );
 }
 
 export default LayerContainer;
 
-function RenderOverlay({ memo }: { memo: Memo }) {
+function RenderOverlay({
+  memo,
+  stageRef,
+}: {
+  memo: Memo;
+  stageRef: RefObject<HTMLDivElement>;
+}) {
   const { type } = memo;
 
   switch (type) {
     case "memo":
-      return <NoteOverlay memo={memo} />;
+      return <NoteOverlay stageRef={stageRef} memo={memo} />;
     case "todo":
-      return <TodoOverlay memo={memo} />;
+      return <TodoOverlay stageRef={stageRef} memo={memo} />;
     case "canvas":
-      return <CanvasOverlay memo={memo} />;
+      return <CanvasOverlay stageRef={stageRef} memo={memo} />;
   }
 }

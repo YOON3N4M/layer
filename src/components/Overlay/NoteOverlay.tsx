@@ -8,7 +8,7 @@ interface NoteOverlayProps extends OverlayProps {
 }
 
 function NoteOverlay(props: NoteOverlayProps) {
-  const { memo } = props;
+  const { memo, stageRef } = props;
   const { id } = memo;
 
   const [body, setBody] = useState(memo.body);
@@ -34,7 +34,7 @@ function NoteOverlay(props: NoteOverlayProps) {
   }, [body]); // text와 savedText가 변경될 때 실행
 
   return (
-    <Overlay memo={memo}>
+    <Overlay stageRef={stageRef} memo={memo}>
       <div className="size-auto mt-sm text-sm">
         <textarea
           value={body}

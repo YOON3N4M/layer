@@ -12,6 +12,7 @@ import {
   HTMLAttributes,
   MouseEvent,
   ReactNode,
+  RefObject,
   useEffect,
   useRef,
   useState,
@@ -22,6 +23,7 @@ import { useSelectedLayerId } from "@/containers/layer/state";
 export interface OverlayProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
   memo: Memo;
+  stageRef: RefObject<HTMLDivElement>;
 }
 
 const overayVariants: any = {
@@ -36,7 +38,7 @@ const overayVariants: any = {
 };
 
 function Overlay(props: OverlayProps) {
-  const { children, className, memo } = props;
+  const { children, className, memo, stageRef } = props;
   const {
     position = { x: 0, y: 0 },
     parentLayerId,
@@ -123,6 +125,7 @@ function Overlay(props: OverlayProps) {
     <motion.div
       ref={overlayRef}
       drag
+      dragConstraints={stageRef}
       dragMomentum={false}
       dragListener={false}
       dragControls={controls}

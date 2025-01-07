@@ -17,7 +17,7 @@ interface TodoOverlayProps extends OverlayProps {
 }
 
 function TodoOverlay(props: TodoOverlayProps) {
-  const { memo } = props;
+  const { memo, stageRef } = props;
   const { id, todoList: todoListData } = memo;
 
   const [todoList, setTodolist] = useState(todoListData);
@@ -48,7 +48,7 @@ function TodoOverlay(props: TodoOverlayProps) {
   }
 
   return (
-    <Overlay memo={memo}>
+    <Overlay stageRef={stageRef} memo={memo}>
       <div className="mt-sm text-sm px-sm group size-full">
         <div className="flex flex-col gap-xxs">
           {todoList.map((todo, idx) => (

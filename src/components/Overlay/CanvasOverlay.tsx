@@ -8,7 +8,7 @@ interface CanvasOverlayProps extends OverlayProps {
 }
 
 function CanvasOverlay(props: CanvasOverlayProps) {
-  const { memo } = props;
+  const { memo, stageRef } = props;
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [getCtx, setGetCtx] = useState<CanvasRenderingContext2D | null>(null);
@@ -82,7 +82,7 @@ function CanvasOverlay(props: CanvasOverlayProps) {
   }, []);
 
   return (
-    <Overlay memo={memo}>
+    <Overlay memo={memo} stageRef={stageRef}>
       <div className="size-full min-w-[500px] min-h-[500px]">
         <canvas
           className="size-[500px]"

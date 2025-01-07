@@ -9,7 +9,7 @@
 }
 
 body {
-  @apply font-pretendard bg-[#242423] text-text [&>*]:border-[#dddddd59];
+  @apply font-pretendard bg-black text-text [&>*]:border-[#dddddd59];
 }
 
 @layer utilities {

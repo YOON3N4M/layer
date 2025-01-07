@@ -4,7 +4,7 @@ function Header(props: HeaderProps) {
   const {} = props;
 
   return (
-    <div className="absolute top-0 left-0 p-md">
+    <div className="fixed p-md w-min  z-[1000]">
       <header>
         <h1 className="font-bold opacity-50">LAYER</h1>
       </header>
