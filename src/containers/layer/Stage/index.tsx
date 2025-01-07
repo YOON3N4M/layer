@@ -22,7 +22,8 @@ const unit = 0.05;
 const maxScale = 1.5;
 const minScale = 0.1;
 
-const TARGET_KEYBOARD = "Meta";
+const ZOOM_TARGET_KEYBOARD = "Meta";
+const DRAG_TARGET_KEYBOARD = " ";
 
 function Stage(props: StageProps) {
   const { children, stageRef } = props;
@@ -36,14 +37,18 @@ function Stage(props: StageProps) {
   const { motionX, motionY } = useDragPosition();
 
   function handleKeydown(event: KeyboardEvent<HTMLDivElement>) {
-    const isTargetKeydown = event.key === TARGET_KEYBOARD;
+    const isTargetKeydown =
+      event.key === ZOOM_TARGET_KEYBOARD || event.key === DRAG_TARGET_KEYBOARD;
+
     if (isTargetKeydown) {
+      event.preventDefault();
       setIsKeydown(true);
     }
   }
 
   function handleKeyup(event: KeyboardEvent<HTMLDivElement>) {
-    const isTargetKeydown = event.key === TARGET_KEYBOARD;
+    const isTargetKeydown =
+      event.key === ZOOM_TARGET_KEYBOARD || event.key === DRAG_TARGET_KEYBOARD;
     if (isTargetKeydown) {
       setIsKeydown(false);
     }
