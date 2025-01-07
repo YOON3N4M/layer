@@ -1,7 +1,8 @@
 import { CanvasMemo, NoteMemo } from "@/types";
-import Overlay, { OverlayProps } from ".";
+
 import { MouseEvent, useEffect, useRef, useState } from "react";
 import useDataSync from "@/hooks/useDataSync";
+import Overlay, { OverlayProps } from "..";
 
 interface CanvasOverlayProps extends OverlayProps {
   memo: CanvasMemo;

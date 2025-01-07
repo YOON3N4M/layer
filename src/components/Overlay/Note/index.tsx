@@ -1,7 +1,7 @@
 import useDataSync from "@/hooks/useDataSync";
 import { NoteMemo } from "@/types";
 import { ChangeEvent, useEffect, useState } from "react";
-import Overlay, { OverlayProps } from ".";
+import Overlay, { OverlayProps } from "..";
 
 interface NoteOverlayProps extends OverlayProps {
   memo: NoteMemo;

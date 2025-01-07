@@ -1,14 +1,13 @@
 "use client";
 
-import Overlay from "@/components/Overlay";
-import CanvasOverlay from "@/components/Overlay/CanvasOverlay";
-import NoteOverlay from "@/components/Overlay/NoteOverlay";
-import TodoOverlay from "@/components/Overlay/TodoOverlay";
 import { useMemoActions, useMemoList } from "@/state";
 import { Memo } from "@/types";
 import { handleLocalStorage } from "@/utils/localstorage";
 import { RefObject, useEffect, useRef } from "react";
 import Stage from "./Stage";
+import TodoOverlay from "@/components/Overlay/Todo";
+import CanvasOverlay from "@/components/Overlay/Canvas";
+import NoteOverlay from "@/components/Overlay/Note";
 
 interface LayerContainerProps {}
 
