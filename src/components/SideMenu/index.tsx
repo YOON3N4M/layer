@@ -21,6 +21,7 @@ import {
   useSelectedLayerId,
 } from "@/containers/layer/state";
 import useClickOutside from "@/hooks/useOutsideEvent";
+import { Reorder } from "motion/react";
 
 interface SideMenuProps {}
 
@@ -30,9 +31,14 @@ function SideMenu(props: SideMenuProps) {
   const [isHide, setIsHide] = useState(false);
 
   const layerList = useLayerList();
+  const { setLayerList } = useDataSync();
 
   function handleMenuHideClick() {
     setIsHide((prev) => !prev);
+  }
+
+  function handleReorder(newOrder: Layer[]) {
+    setLayerList(newOrder);
   }
 
   return (
@@ -53,11 +59,13 @@ function SideMenu(props: SideMenuProps) {
         </button>
         <div className="size-full">
           <div className="p-md border-b border-itemBorder">Layer</div>
-          <div className="size-full">
+          <Reorder.Group axis="y" values={layerList} onReorder={handleReorder}>
             {layerList.map((layer) => (
-              <LayerItem key={layer.id} layer={layer} />
+              <Reorder.Item key={`layer-${layer.id}`} value={layer}>
+                <LayerItem layer={layer} />
+              </Reorder.Item>
             ))}
-          </div>
+          </Reorder.Group>
         </div>
       </div>
     </div>

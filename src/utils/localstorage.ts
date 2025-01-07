@@ -27,6 +27,10 @@ function editLayer(layer: Layer) {
   localStorage.setItem(LAYER_KEY, JSON.stringify(layerList));
 }
 
+function setLayerList(layerList: Layer[]) {
+  localStorage.setItem(LAYER_KEY, JSON.stringify(layerList));
+}
+
 function removeLayer(layerId: number) {
   const layerList = getLayer() as Layer[];
   const filteredLayerList = layerList.filter((layer) => layer.id !== layerId);
@@ -75,6 +79,7 @@ export const handleLocalStorage = {
   addLayer,
   editLayer,
   removeLayer,
+  setLayerList,
   getMemo,
   addMemo,
   removeMemo,

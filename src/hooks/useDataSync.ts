@@ -15,6 +15,7 @@ function useDataSync() {
     editLayer: editStateLayer,
     removeLayer: removeStateLayer,
     addMemo,
+    setLayerList: setStateLayerList,
     removeMemo: removeStateMemo,
     editMemo: editStateMemo,
     setMemoList,
@@ -48,6 +49,10 @@ function useDataSync() {
     setMemoList(filteredMemoList);
     setSelectedLayerId(null);
     console.log(selectedLayerId);
+  }
+  function setLayerList(layerList: Layer[]) {
+    setStateLayerList(layerList);
+    handleLocalStorage.setLayerList(layerList);
   }
   // 메모
   function createMemo(type: MemoType) {
@@ -83,6 +88,7 @@ function useDataSync() {
     createLayer,
     editLayer,
     removeLayer,
+    setLayerList,
     createMemo,
     editMemo,
     removeMemo,
