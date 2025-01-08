@@ -71,3 +71,23 @@ export function checkObjectDiffer(obj1: any, obj2: any) {
 
   return !keys1.every((key) => obj1[key] === obj2[key]);
 }
+
+/**
+ * 캔버스 context에 img dataURL을 set하는 함수
+ */
+
+export function setDataURLToCanvasContext(
+  ctx: CanvasRenderingContext2D,
+  dataURL: string
+) {
+  const img = new Image();
+  img.src = dataURL;
+  img.onload = () => {
+    console.log("ddddasdasdasd");
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.drawImage(img, 0, 0);
+  };
+  img.onerror = () => {
+    console.error("Failed to load image from dataURL");
+  };
+}

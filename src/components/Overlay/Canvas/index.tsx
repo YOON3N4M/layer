@@ -3,6 +3,7 @@ import { CanvasMemo, NoteMemo } from "@/types";
 import { MouseEvent, useEffect, useRef, useState } from "react";
 import useDataSync from "@/hooks/useDataSync";
 import Overlay, { OverlayProps } from "..";
+import { setDataURLToCanvasContext } from "@/utils";
 
 interface CanvasOverlayProps extends OverlayProps {
   memo: CanvasMemo;
@@ -72,12 +73,7 @@ function CanvasOverlay(props: CanvasOverlayProps) {
     setDataURL(initialURL);
 
     if (memo.dataURL) {
-      const img = new Image();
-      img.src = memo.dataURL;
-
-      img.onload = () => {
-        ctx.drawImage(img, 0, 0); // 이미지 데이터를 캔버스에 렌더링
-      };
+      setDataURLToCanvasContext(ctx, initialURL);
     }
     console.log(getCtx);
   }, []);
